@@ -28,6 +28,11 @@ hs_err_pid*
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/misc.xml
+.idea/**/vcs.xml
+.idea/**/modules.xml
+.iml
+\sepm-assignment-2.iml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -53,6 +58,7 @@ cmake-build-release/
 
 # IntelliJ
 out/
+
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
