@@ -5,6 +5,7 @@ package view;
  * @since 21/4/18.
  */
 public abstract class JMossView {
+
     private String myContent;
 
     JMossView(){
