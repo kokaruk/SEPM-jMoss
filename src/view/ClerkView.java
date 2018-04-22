@@ -1,4 +1,13 @@
 package view;
 
-public class ClerkView {
+/**
+ * @author Calvin
+ */
+public class ClerkView extends JMossView {
+
+    public ClerkView() {
+        ViewHelper.clearScreen();
+    }
+
+
 }
