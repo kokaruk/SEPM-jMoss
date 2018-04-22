@@ -7,6 +7,7 @@ import model.BookingClerk;
 import model.User;
 import view.JMossView;
 
+import java.awt.*;
 import java.io.Console;
 import java.util.Scanner;
 
@@ -30,6 +31,7 @@ public class JMOssLoginController implements IController {
     @Override
     public void start() {
         myView.displayContent();
+        //exit();
         login();
     }
 
@@ -77,6 +79,12 @@ public class JMOssLoginController implements IController {
         } catch (Exception ex){
             System.err.println(ex.getMessage());
         }
+    }
+
+    void exit() {
+        System.out.println("Bye!");
+        Toolkit.getDefaultToolkit().beep();
+        System.exit(0);
     }
 
 }
