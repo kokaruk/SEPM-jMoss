@@ -31,8 +31,8 @@ public class JMOssLoginController implements IController {
     @Override
     public void start() {
         myView.displayContent();
-        //exit();
-        login();
+        exit();
+        //login();
     }
 
     void login(){
@@ -86,5 +86,7 @@ public class JMOssLoginController implements IController {
         Toolkit.getDefaultToolkit().beep();
         System.exit(0);
     }
+
+
 
 }
