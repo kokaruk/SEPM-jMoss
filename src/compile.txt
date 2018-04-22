@@ -1,4 +1,4 @@
 compile: javac -d out -proc:none -cp .:lib/*:src: src/*.java
-java -cp .:lib/*:out:src:src/assets/properties out.jMOss
 
-java -cp .:../lib/*:production/: jMoss
+
+java -cp .:../lib/*:production/:../src/properties/ jMoss
