@@ -2,7 +2,9 @@ package dal;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Util methods to read / write CSV files
@@ -46,6 +48,21 @@ class CSVUtils {
             System.out.println(e.getMessage());
         }
         return new ArrayList<>();
+    }
+
+    Set<List<String>> readAll(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            Set<List<String>> allFile = new HashSet<>();
+            reader.readLine(); // skip headers
+            String line;
+            while ((line = reader.readLine()) != null) {
+                allFile.add(parseLine(line));
+            }
+            return allFile;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return new HashSet<>();
     }
 
     private List<String> parseLine(String cvsLine) {
