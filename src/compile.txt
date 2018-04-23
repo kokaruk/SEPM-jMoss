@@ -1,4 +1,5 @@
-compile: javac -d out -proc:none -cp .:lib/*:src: src/*.java
+compile:
+javac -d out -proc:none -cp .:lib/*:src: src/*.java src/model/*.java src/controller/*.java
 
-
-java -cp .:../lib/*:production/:../src/properties/ jMoss
+run
+java -cp .:../lib/*:../src/properties/ jMoss

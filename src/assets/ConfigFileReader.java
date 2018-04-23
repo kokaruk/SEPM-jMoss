@@ -72,8 +72,8 @@ final class ConfigFileReader implements IConfigFileReader {
             myPropertyString = myProp.getProperty(myPropertyName);
         } catch (IOException ex) {
             logger.fatal(ex.getMessage());
-            throw new ConfigFileMissingException(String.format("Unknown issue accessing config file. See if %s exist in " +
-                    "OzLympicGames/OzLympicGamesMVC/ozlmodel", CONFIG_FILE));
+            throw new ConfigFileMissingException(String.format("Unknown issue accessing config file. See if %s exist ",
+                    CONFIG_FILE));
 
         } catch (Exception ex){
             logger.fatal(ex.toString());

@@ -39,21 +39,20 @@ public class UserRepo implements IUserRepoDAL {
         return instance;
     }
 
-     @SuppressWarnings("unchecked")
      public User getUser(String username, String password)
             throws ClassNotFoundException,
             InstantiationException,
             IllegalAccessException,
             NoSuchMethodException,
             InvocationTargetException {
-        List<String> userLIne = CSVUtils.getInstance().readAndSearch(USERS_FILE, username);
+        List<String> userLine = CSVUtils.getInstance().readAndSearch(USERS_FILE, username);
         User aUser = null;
-        if (userLIne.size() > 0 && userLIne.contains(username) && userLIne.contains(password)){
-            String type = "model." + userLIne.get(3);
-            Class userClass = Class.forName(type);
-            //noinspection unchecked
-            Constructor userConstructor = userClass.getDeclaredConstructor(int.class, String.class);
-            aUser = (User) userConstructor.newInstance(Integer.parseInt(userLIne.get(0)), username);
+        if (userLine.size() > 0 && userLine.contains(username) && userLine.contains(password)){
+            String type = "model." + userLine.get(3);
+            Class<?> userClass = Class.forName(type);
+            System.out.println("Class: " + userClass.toString());
+            Constructor<?> userConstructor = userClass.getConstructor(int.class, String.class);
+            aUser = (User) userConstructor.newInstance(Integer.parseInt(userLine.get(0)), username);
         }
         return aUser;
     }
