@@ -1,6 +1,6 @@
-cinemaName,cinemaMaxSeats
-St.Kilda,20
-Fitzroy,20
-Melbourne CBD,20
-Sunshine,20
-Lilydale,20
+cinemaId,cinemaName,cinemaMaxSeats
+1,St.Kilda,20
+2,Fitzroy,20
+3,Melbourne CBD,20
+4,Sunshine,20
+5,Lilydale,20

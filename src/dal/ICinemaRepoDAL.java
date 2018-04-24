@@ -2,7 +2,7 @@ package dal;
 
 import model.Cinema;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author dimz
@@ -11,7 +11,7 @@ import java.util.List;
 public interface ICinemaRepoDAL {
     // create
     // read
-    List<Cinema> getAllCinemas();
+    Map<Integer, Cinema> getAllCinemas();
     // update
     // delete
 }

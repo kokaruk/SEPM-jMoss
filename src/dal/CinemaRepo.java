@@ -4,9 +4,7 @@ import assets.ConfigFileMissingException;
 import assets.HelperFunctions;
 import model.Cinema;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author dimz
@@ -42,11 +40,14 @@ public class CinemaRepo implements ICinemaRepoDAL {
 
 
     @Override
-    public List<Cinema> getAllCinemas() {
+    public Map<Integer, Cinema> getAllCinemas() {
         Set<List<String>> allFile = CSVUtils.getInstance().readAll(CINEMA_FILE);
-        List<Cinema> allCinemas = new LinkedList<>();
+        Map<Integer, Cinema> allCinemas = new HashMap<>();
         try {
-            allFile.forEach(cinemaRow -> allCinemas.add(new Cinema(Integer.parseInt(cinemaRow.get(1)), cinemaRow.get(0))));
+            allFile.forEach(cinemaRow ->
+                    allCinemas.put(Integer.parseInt(cinemaRow.get(0)),
+                            new Cinema(cinemaRow.get(1),
+                                    Integer.parseInt(cinemaRow.get(2)))));
         } catch (Exception e) {
            e.printStackTrace();
         }

@@ -7,12 +7,13 @@ import java.util.List;
  * @since 23/4/18.
  */
 public class Cinema {
+
     private int MAX_SEATS;
     private String cinemaName;
 
     private List<Session> sessions;
 
-    public Cinema(int MAX_SEATS, String cinemaName) {
+    public Cinema(String cinemaName, int MAX_SEATS) {
         this.MAX_SEATS = MAX_SEATS;
         this.cinemaName = cinemaName;
     }

@@ -1,2 +1,6 @@
 "id","name","password","type"
-"1","test","clerk","BookingClerk"
+"1",patrick,test,"BookingClerk"
+2,dimz,test,BookingClerk
+3,kristin,test,BookingClerk
+4,calvin,test,BookingClerk
+5,nirav,test,BookingClerk

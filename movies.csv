@@ -1,19 +1,19 @@
 movieID,movieName,movieRating
 1,Early Man,PG
 2,A Wrinkle in Time,PG
-3,Paddington 2,PG
+3,Paddington 2,G
 4,Peter Rabbit,PG
-5,Pacific Rim Uprising,PG-13
-6,Darkest Hour,PG-13
-7,Jumanji: Welcome To The Jungle,PG-13
-8,The BBQ,PG-13
-9,Blank Panther,PG-13
-10,Hichiki,PG-13
-11,Rampage,PG-13
-12,Jurassic World,PG-13
+5,Pacific Rim Uprising,M
+6,Darkest Hour,PG
+7,Jumanji: Welcome To The Jungle,PG
+8,The BBQ,PG
+9,Black Panther,M
+10,Hichiki,PG
+11,Rampage,M
+12,Jurassic World,M
 13,Avengers Infinity War,M
-14,Fifty Shades Freed,R
-15,Blockers,R
-16,Game Night,R
-17,"I, Tonya",R
-18,Red Sparrow,R
+14,Fifty Shades Freed,MA15
+15,Blockers,MA15
+16,Game Night,MA15
+17,"I, Tonya",MA15
+18,Red Sparrow,MA15

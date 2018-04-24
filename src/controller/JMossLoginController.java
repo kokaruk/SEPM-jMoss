@@ -17,7 +17,6 @@ import java.util.Scanner;
  * @since 21/4/18.
  */
 public class JMossLoginController implements IController {
-
     private final int MAX_LOGIN_ATTEMPTS;
     private int currentLoginAttempt;
     private JMossView myView;
@@ -63,7 +62,7 @@ public class JMossLoginController implements IController {
             IUserRepoDAL userRepo = UserRepo.getInstance();
             User user;
             try {
-                user = userRepo.getUser(username, new String(password));
+                user = userRepo.getUser(username.toLowerCase(), new String(password));
                 if (user != null) {
                     String userClassName = user.getClass().getSimpleName();
                     String userClassControllerName = "controller.JMoss" + userClassName + "Controller";
