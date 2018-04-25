@@ -26,5 +26,9 @@ public final class HelperFunctions {
         HelperFunctions.propertyReader = propertyReader_Fake;
     }
 
+    public class Tuple<T>{
+        public T first;
+        public T second;
+    }
 
 }

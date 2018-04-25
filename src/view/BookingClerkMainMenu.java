@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 public class BookingClerkMainMenu extends JMossView {
 
@@ -16,11 +17,11 @@ public class BookingClerkMainMenu extends JMossView {
 
 
     private String MenuOptions = "1. See All Movies\n" +
-                                "2. Find A Movie\n" +
-                                "3. Cinemas\n" +
-                                "4. Add Booking\n" +
-                                "5. Delete Booking\n" +
-                                "6. Exit";
+                                 "2. Find A Movie\n" +
+                                 "3. Cinemas\n" +
+                                 "4. Add Booking\n" +
+                                 "5. Delete Booking\n" +
+                                 "6. Exit";
 
     public BookingClerkMainMenu(String userName) {
         String pathToAsciFile = "assets/ascii_art.txt";
@@ -48,6 +49,19 @@ public class BookingClerkMainMenu extends JMossView {
             System.out.println("Asset header not found");
         }
 
-
     }
+
+    public String getInput() {
+        super.displayContent();
+        System.out.println();
+        Scanner scanner = new Scanner(System.in);
+        Integer option = scanner.nextInt();
+        switch (option) {
+            case 1: return "AllMovies";
+            case 6: return "exit";
+            default: return "unknown";
+        }
+    }
+
+
 }

@@ -50,7 +50,6 @@ public class UserRepo implements IUserRepoDAL {
         if (userLine.size() > 0 && userLine.contains(username) && userLine.contains(password)){
             String type = "model." + userLine.get(3);
             Class<?> userClass = Class.forName(type);
-            System.out.println("Class: " + userClass.toString());
             Constructor<?> userConstructor = userClass.getConstructor(int.class, String.class);
             aUser = (User) userConstructor.newInstance(Integer.parseInt(userLine.get(0)), username);
         }

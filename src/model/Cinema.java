@@ -1,6 +1,7 @@
 package model;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * @author dimz
@@ -10,8 +11,7 @@ public class Cinema {
 
     private int MAX_SEATS;
     private String cinemaName;
-
-    private List<Session> sessions;
+    private Set<Session> sessions;
 
     public Cinema(String cinemaName, int MAX_SEATS) {
         this.MAX_SEATS = MAX_SEATS;
@@ -26,7 +26,12 @@ public class Cinema {
         return cinemaName;
     }
 
-    public List<Session> getSessions() {
+    public void addSession(Session session) {
+        if(sessions == null) sessions = new LinkedHashSet<>(); // lazy instantiate
+        this.sessions.add(session);
+    }
+
+    public Set<Session> getSessions() {
         return sessions;
     }
 }

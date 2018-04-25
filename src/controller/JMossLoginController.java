@@ -8,9 +8,8 @@ import view.JMossView;
 import view.ViewHelper;
 
 import java.awt.*;
-import java.io.Console;
 import java.lang.reflect.Constructor;
-import java.util.Scanner;
+import java.util.Arrays;
 
 /**
  * @author dimz
@@ -30,7 +29,6 @@ public class JMossLoginController implements IController {
 
     @Override
     public void start() {
-        myView.displayContent();
         login();
         exit();
     }
@@ -38,32 +36,16 @@ public class JMossLoginController implements IController {
     private void login(){
         if (MAX_LOGIN_ATTEMPTS > currentLoginAttempt){
             currentLoginAttempt++;
-            String userNamePrompt = "Enter your Username: ";
-            String username;
-            String passwordPrompt = "Enter yor password: ";
-            char[] password;
-            Console console = System.console();
-        /*
-            console only available when running from terminal or dos.
-            when compiled in IDE this object is null
-         */
-            if (console == null) {
-                System.err.println("Running test mode from IDE");
-                Scanner scanner = new Scanner(System.in);
-                System.out.print(userNamePrompt);
-                username = scanner.nextLine().trim();
-                System.out.print(passwordPrompt);
-                password = scanner.nextLine().trim().toCharArray();
-            } else {
-                username = console.readLine(userNamePrompt).trim();
-                password = console.readPassword(passwordPrompt);
-            }
+            String[] usernamePassword = Arrays.copyOf(myView.getInput().split("-"), 2);
+            String username = usernamePassword[0];
+            String password = usernamePassword[1];
 
             IUserRepoDAL userRepo = UserRepo.getInstance();
             User user;
             try {
-                user = userRepo.getUser(username.toLowerCase(), new String(password));
+                user = userRepo.getUser(username.toLowerCase(), password);
                 if (user != null) {
+                    // make user controller based on user class instance name
                     String userClassName = user.getClass().getSimpleName();
                     String userClassControllerName = "controller.JMoss" + userClassName + "Controller";
                     Class<?> controllerClass = Class.forName(userClassControllerName);
@@ -87,7 +69,7 @@ public class JMossLoginController implements IController {
         }
     }
 
-    void exit() {
+    private void exit() {
         System.out.println("Bye!");
         Toolkit.getDefaultToolkit().beep();
         System.exit(0);

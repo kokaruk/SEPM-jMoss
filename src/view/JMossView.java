@@ -8,16 +8,19 @@ public abstract class JMossView {
 
     private String myContent;
 
-    JMossView(){
-        ViewHelper.clearScreen();
+    public void wrongInput(){
+        System.err.println("No such option.Try again");
     }
 
     void setMyContent(String myContent) {
         this.myContent = myContent;
     }
 
-    public void displayContent(){
+    void displayContent(){
+        ViewHelper.clearScreen();
         System.out.println(myContent);
     }
+
+    public abstract String getInput();
 
 }

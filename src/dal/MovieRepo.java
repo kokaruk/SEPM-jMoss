@@ -44,10 +44,10 @@ public class MovieRepo implements IMovieRepoDAL {
         Set<List<String>> allFile = CSVUtils.getInstance().readAll(MOVIE_FILE);
         Map<Integer, Movie> allMovies = new HashMap<>();
         try {
-            allFile.forEach(moviewRow ->
-                    allMovies.put(Integer.parseInt(moviewRow.get(0)),
-                            new Movie(moviewRow.get(1),
-                                    moviewRow.get(2))));
+            allFile.forEach(movieRow ->
+                    allMovies.put(Integer.parseInt(movieRow.get(0)),
+                            new Movie(movieRow.get(1),
+                                    movieRow.get(2))));
         } catch (Exception e) {
             e.printStackTrace();
         }
