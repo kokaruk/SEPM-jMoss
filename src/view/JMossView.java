@@ -7,9 +7,10 @@ package view;
 public abstract class JMossView {
 
     private String myContent;
+    private boolean error;
 
-    public void wrongInput(){
-        System.err.println("No such option.Try again");
+    void wrongInput() {
+        System.err.println("\033[31mThis input value is not allowed\033[37m");
     }
 
     void setMyContent(String myContent) {
@@ -17,10 +18,40 @@ public abstract class JMossView {
     }
 
     void displayContent(){
-        ViewHelper.clearScreen();
         System.out.println(myContent);
     }
 
+    /**
+     * gets input from user
+     * @return corresponding values based on user input
+     */
     public abstract String getInput();
+
+    /**
+     * init user input screen
+     */
+    void initInput(){
+        ViewHelper.clearScreen();
+        if(isError()){
+            displayContent();
+            wrongInput();
+            setError(false);
+        } else {
+            displayContent();
+        }
+    }
+
+
+    /**
+     * error. set it to true if calling to get input did not produce required result
+     */
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
+    boolean isError() {
+        return error;
+    }
+
 
 }

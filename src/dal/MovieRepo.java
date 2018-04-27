@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MovieRepo implements IMovieRepoDAL {
+final class MovieRepo implements IMovieRepoDAL {
 
 
     private final static String MOVIE_FILE;
@@ -31,7 +31,7 @@ public class MovieRepo implements IMovieRepoDAL {
     private MovieRepo() {}
 
     // lazy instance constructor
-    public static IMovieRepoDAL getInstance() {
+    static IMovieRepoDAL getInstance() {
         if (instance == null) {
             instance = new MovieRepo();
         }

@@ -62,12 +62,17 @@ public class AllMovies extends JMossView {
 
     @Override
     public String getInput() {
-        super.displayContent();
-        System.out.println();
+        initInput();
         Scanner scanner = new Scanner(System.in);
-        Integer option = scanner.nextInt();
+        Integer option = 0;
+        try {
+            option = scanner.nextInt();
+        } catch (Exception e) {
+            setError(true);
+        }
         switch (option) {
-            default: return "BookingClerkMainMenu";
+            case 1: return "BookingClerkMainMenu";
+            default: return "unknown";
         }
     }
 }

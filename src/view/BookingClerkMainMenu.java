@@ -52,16 +52,20 @@ public class BookingClerkMainMenu extends JMossView {
     }
 
     public String getInput() {
-        super.displayContent();
+        initInput();
         System.out.println();
         Scanner scanner = new Scanner(System.in);
-        Integer option = scanner.nextInt();
+        Integer option = 0;
+        try {
+            option = scanner.nextInt();
+        } catch (Exception e) {
+            setError(true);
+        }
         switch (option) {
             case 1: return "AllMovies";
             case 6: return "exit";
             default: return "unknown";
         }
     }
-
 
 }

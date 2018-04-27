@@ -13,7 +13,7 @@ import java.util.Set;
  * @author dimz
  * @since 25/4/18.
  */
-public class SessionRepo implements ISessionRepoDAL {
+final class SessionRepo implements ISessionRepoDAL {
 
     private final static String SESSION_FILE;
     static {
@@ -34,7 +34,7 @@ public class SessionRepo implements ISessionRepoDAL {
     private SessionRepo() {}
 
     // lazy instance constructor
-    public static ISessionRepoDAL getInstance() {
+    static ISessionRepoDAL getInstance() {
         if (instance == null) {
             instance = new SessionRepo();
         }

@@ -18,7 +18,7 @@ public class LoginView extends JMossView{
 
     @Override
     public String getInput() {
-
+        initInput();
         String userNamePrompt = "Enter your Username: ";
         String username;
         String passwordPrompt = "Enter yor password: ";
@@ -41,5 +41,22 @@ public class LoginView extends JMossView{
         }
 
         return username + "-" + new String(password);
+    }
+
+    @Override
+    public void wrongInput() {
+        System.err.println("\033[31mCan't find username/password combination. Please try again\033[37m");
+    }
+
+    @Override
+    void initInput() {
+        ViewHelper.clearScreen();
+        if (isError()) {
+            wrongInput();
+            displayContent();
+            setError(false);
+        } else {
+            displayContent();
+        }
     }
 }

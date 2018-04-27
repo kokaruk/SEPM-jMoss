@@ -12,7 +12,7 @@ import java.util.List;
  * @author dimz
  * @since 21/4/18.
  */
-public class UserRepo implements IUserRepoDAL {
+final class UserRepo implements IUserRepoDAL {
     private final static String USERS_FILE;
     static {
         String USERS_FILE1;
@@ -32,7 +32,7 @@ public class UserRepo implements IUserRepoDAL {
     private UserRepo() {}
 
     // lazy instance constructor
-    public static IUserRepoDAL getInstance() {
+    static IUserRepoDAL getInstance() {
         if (instance == null) {
             instance = new UserRepo();
         }

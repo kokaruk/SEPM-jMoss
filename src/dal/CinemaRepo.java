@@ -10,7 +10,7 @@ import java.util.*;
  * @author dimz
  * @since 24/4/18.
  */
-public class CinemaRepo implements ICinemaRepoDAL {
+final class CinemaRepo implements ICinemaRepoDAL {
 
     private final static String CINEMA_FILE;
     static {
@@ -31,7 +31,7 @@ public class CinemaRepo implements ICinemaRepoDAL {
     private CinemaRepo() {}
 
     // lazy instance constructor
-    public static ICinemaRepoDAL getInstance() {
+     static ICinemaRepoDAL getInstance() {
         if (instance == null) {
             instance = new CinemaRepo();
         }

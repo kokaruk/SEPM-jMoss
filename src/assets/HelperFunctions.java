@@ -13,7 +13,10 @@ public final class HelperFunctions {
      * @return Singleton instance, implementation of  IConfigReader Interface
      */
     public static IConfigFileReader getConfigReader()  {
-        return propertyReader != null ? propertyReader : ConfigFileReader.getInstance();
+        if (propertyReader == null){
+            setCustomReader(ConfigFileReader.getInstance());
+        }
+        return propertyReader;
     }
 
     /**
@@ -26,9 +29,5 @@ public final class HelperFunctions {
         HelperFunctions.propertyReader = propertyReader_Fake;
     }
 
-    public class Tuple<T>{
-        public T first;
-        public T second;
-    }
 
 }

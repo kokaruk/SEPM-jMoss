@@ -1,8 +1,6 @@
 package controller;
 
-import dal.CinemaRepo;
-import dal.MovieRepo;
-import dal.SessionRepo;
+import dal.DALFactory;
 import model.Cinema;
 import model.Movie;
 import model.Session;
@@ -34,9 +32,9 @@ public class JMossBookingClerkController implements IController {
     JMossBookingClerkController(User user){
         this.user = user;
         currentMenu =  new BookingClerkMainMenu(this.user.getUserName());
-        cinemas.putAll(CinemaRepo.getInstance().getAllCinemas());
-        movies.putAll(MovieRepo.getInstance().getAllMovies());
-        sessions.putAll(SessionRepo.getInstance().getAllSessions());
+        cinemas.putAll(DALFactory.getCinemaRepoDAL().getAllCinemas());
+        movies.putAll(DALFactory.getMovieRepoDAL().getAllMovies());
+        sessions.putAll(DALFactory.getSessionRepoDAL().getAllSessions());
         for (Map.Entry<Integer, Session> sessionEntry : sessions.entrySet() ) {
             Session session = sessionEntry.getValue();
             session.setMovie(movies.get(session.getMovieId()));
@@ -51,7 +49,6 @@ public class JMossBookingClerkController implements IController {
     @Override
     public void start() {
         logger.debug(user.getUserName());
-        System.out.println();
         activateMenu();
     }
 
@@ -60,6 +57,7 @@ public class JMossBookingClerkController implements IController {
         switch(inputString) {
             case "exit": break;
             case "unknown":
+                currentMenu.setError(true);
                 activateMenu();
                 break;
             case "BookingClerkMainMenu":try {

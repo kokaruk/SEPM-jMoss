@@ -1,12 +1,14 @@
 package controller;
 
 import assets.HelperFunctions;
+import dal.DALFactory;
 import dal.IUserRepoDAL;
-import dal.UserRepo;
 import model.User;
 import view.JMossView;
-import view.ViewHelper;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
 import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -40,7 +42,7 @@ public class JMossLoginController implements IController {
             String username = usernamePassword[0];
             String password = usernamePassword[1];
 
-            IUserRepoDAL userRepo = UserRepo.getInstance();
+            IUserRepoDAL userRepo = DALFactory.getUserRepoDAL();
             User user;
             try {
                 user = userRepo.getUser(username.toLowerCase(), password);
@@ -52,10 +54,8 @@ public class JMossLoginController implements IController {
                     Constructor<?> controllerConstructor = controllerClass.getDeclaredConstructor(User.class);
                     IController userController = (IController) controllerConstructor.newInstance(user);
                     userController.start();
-
                 } else {
-                    ViewHelper.clearScreen();
-                    System.out.println("Can't find username/password combination. Please try again");
+                    myView.setError(true);
                     login();
                 }
 
@@ -71,7 +71,33 @@ public class JMossLoginController implements IController {
 
     private void exit() {
         System.out.println("Bye!");
-        Toolkit.getDefaultToolkit().beep();
+        Toolkit.getDefaultToolkit().beep(); // doesn't beep on a mac
+
+        // run some OS Checking
+        String osName = System.getProperty("os.name").toLowerCase();
+        boolean isMacOs = osName.startsWith("mac os x");
+        if (isMacOs)
+        {
+            // some crazy voodoo below. Stack overflow rules!!!
+            byte[] buf = new byte[ 1 ];
+            AudioFormat af = new AudioFormat( (float )44100, 8, 1, true, false );
+            try {
+                SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
+                sdl.open();
+                sdl.start();
+                for (int i = 0; i < 1000 * (float) 44100 / 1000; i++) {
+                    double angle = i / ((float) 44100 / 440) * 2.0 * Math.PI;
+                    buf[0] = (byte) (Math.sin(angle) * 100);
+                    sdl.write(buf, 0, 1);
+                }
+                sdl.drain();
+                sdl.stop();
+            } catch (Exception e) {
+                // i don't care really
+            }
+        }
+
+
         System.exit(0);
     }
 
