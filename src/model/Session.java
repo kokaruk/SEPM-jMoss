@@ -11,7 +11,7 @@ public class Session {
     private final int sessionDay;
     private final int sessionTime;
     private final int movieId;
-    private final int cimaId;
+    private final int cinemaId;
     private Movie movie;
     private Cinema cinema;
     private List<Booking> bookingList;
@@ -20,7 +20,7 @@ public class Session {
         this.sessionDay = sessionDay;
         this.sessionTime = sessionTime;
         this.movieId = movieId;
-        this.cimaId = cinemaId;
+        this.cinemaId = cinemaId;
         this.bookingList = new LinkedList<>();
     }
 
@@ -39,7 +39,7 @@ public class Session {
     }
 
     public int getCinemaId() {
-        return cimaId;
+        return cinemaId;
     }
 
     public int getSessionDay() {
@@ -61,4 +61,13 @@ public class Session {
     public Cinema getCinema() {
         return cinema;
     }
+
+    public void addBooking(Booking booking){
+        if (bookingList.size() < cinema.getMAX_SEATS()){
+            bookingList.add(booking);
+        } else {
+            throw new IndexOutOfBoundsException("The session is booked out");
+        }
+    }
+
 }

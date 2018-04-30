@@ -9,6 +9,7 @@ public final class DALFactory {
     static private ICinemaRepoDAL cinemaRepoDAL;
     static private IMovieRepoDAL movieRepoDAL;
     static private ISessionRepoDAL sessionRepoDAL;
+    static private IBookingRepoDAL bookingRepoDAL;
 
     /**
      * Factory method for repo implementation
@@ -63,5 +64,16 @@ public final class DALFactory {
 
     public static void setSessionRepoDAL(ISessionRepoDAL sessionRepoDAL) {
         DALFactory.sessionRepoDAL = sessionRepoDAL;
+    }
+
+    public static IBookingRepoDAL getBookingRepoDAL() {
+        if( bookingRepoDAL == null){
+          setBookingRepoDAL(BookingRepo.getInstance());
+        }
+        return bookingRepoDAL;
+    }
+
+    public static void setBookingRepoDAL(IBookingRepoDAL bookingRepoDAL) {
+        DALFactory.bookingRepoDAL = bookingRepoDAL;
     }
 }

@@ -1,10 +1,7 @@
 package controller;
 
 import dal.DALFactory;
-import model.Cinema;
-import model.Movie;
-import model.Session;
-import model.User;
+import model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import view.BookingClerkMainMenu;
@@ -27,6 +24,7 @@ public class JMossBookingClerkController implements IController {
     private Map<Integer, Cinema> cinemas = new HashMap<>();
     private Map<Integer, Movie> movies = new HashMap<>();
     private Map<Integer, Session> sessions = new HashMap<>();
+    private Map<Integer, Booking> bookings = new HashMap<>();
 
     @SuppressWarnings("unused")
     JMossBookingClerkController(User user){
@@ -35,6 +33,7 @@ public class JMossBookingClerkController implements IController {
         cinemas.putAll(DALFactory.getCinemaRepoDAL().getAllCinemas());
         movies.putAll(DALFactory.getMovieRepoDAL().getAllMovies());
         sessions.putAll(DALFactory.getSessionRepoDAL().getAllSessions());
+        bookings.putAll(DALFactory.getBookingRepoDAL().getAllBookings());
         for (Map.Entry<Integer, Session> sessionEntry : sessions.entrySet() ) {
             Session session = sessionEntry.getValue();
             session.setMovie(movies.get(session.getMovieId()));
