@@ -35,7 +35,12 @@ class CSVUtils {
         return instance;
     }
 
-
+    /**
+     * searches one single line from CSV file
+     * @param filePath path to CSV file
+     * @param searchValue value to search
+     * @return first occurence of search value
+     */
      List<String> readAndSearch(String filePath, String searchValue){
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -50,6 +55,11 @@ class CSVUtils {
         return new ArrayList<>();
     }
 
+    /**
+     * Read all contents of the file
+     * @param filePath path to CSV file
+     * @return Set of list of string
+     */
     Set<List<String>> readAll(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             Set<List<String>> allFile = new HashSet<>();
@@ -64,6 +74,8 @@ class CSVUtils {
         }
         return new HashSet<>();
     }
+
+    // all parse line methods for converting a single line of String to list of string of CSV line values
 
     private List<String> parseLine(String cvsLine) {
         return parseLine(cvsLine, DEFAULT_SEPARATOR, DEFAULT_QUOTE);
@@ -157,6 +169,12 @@ class CSVUtils {
         return result;
     }
 
+    /**
+     * writes one line to CSV file,
+     * @param values
+     * @param filename
+     * @throws IOException
+     */
     void writeLine(List<String> values, String filename) throws IOException {
         try (Writer w = new FileWriter(filename, true)) {
             boolean firstVal = true;

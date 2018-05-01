@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
+ * the class reads properties from config file
  * @author dimz
  * @since 21/4/18.
  */
@@ -48,7 +49,7 @@ final class ConfigFileReader implements IConfigFileReader {
             System.err.println();
             System.err.println(e.toString());
             System.exit(0);
-        } catch (ConfigFileMissingException err) {
+        } catch (IOException err) {
             logger.fatal(err.getMessage());
             System.exit(0);
         }
@@ -63,7 +64,7 @@ final class ConfigFileReader implements IConfigFileReader {
      * @throws ConfigFileMissingException if passed URI doesn't exist
      */
     @Override
-    public String getConfigString(String myPropertyName) throws ConfigFileMissingException {
+    public String getConfigString(String myPropertyName) throws IOException {
         Properties myProp = new Properties();
 
         String myPropertyString;

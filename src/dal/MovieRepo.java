@@ -1,24 +1,30 @@
 package dal;
 
-import assets.ConfigFileMissingException;
 import assets.HelperFunctions;
 import model.Movie;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Real implementation of Movie repo. Interacts with Data Reader class
+ */
 final class MovieRepo implements IMovieRepoDAL {
-
-
+    private static Logger logger = LogManager.getLogger();
     private final static String MOVIE_FILE;
+
     static {
         String MOVIE_FILE1;
         try {
             MOVIE_FILE1 = HelperFunctions.getConfigReader().getConfigString("MOVIE_FILE");
-        } catch (ConfigFileMissingException e){
+        } catch (IOException e){
             MOVIE_FILE1 = "";
+            logger.fatal(e.toString());
         }
         MOVIE_FILE = MOVIE_FILE1;
     }

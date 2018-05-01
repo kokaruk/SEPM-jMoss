@@ -1,24 +1,30 @@
 package dal;
 
-import assets.ConfigFileMissingException;
 import assets.HelperFunctions;
 import model.Booking;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Real implementation of booking repo. Interacts with Data Reader class
+ */
 final class BookingRepo implements IBookingRepoDAL{
-
+    private static Logger logger = LogManager.getLogger();
     private final static String BOOKING_FILE;
 
     static {
         String BOOKING_FILE1;
         try {
             BOOKING_FILE1 = HelperFunctions.getConfigReader().getConfigString("BOOKING_FILE");
-        } catch (ConfigFileMissingException e){
+        } catch (IOException e){
             BOOKING_FILE1 = "";
+            logger.fatal(e.toString());
         }
         BOOKING_FILE = BOOKING_FILE1;
     }

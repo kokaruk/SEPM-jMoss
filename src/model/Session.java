@@ -62,7 +62,7 @@ public class Session {
         return cinema;
     }
 
-    public void addBooking(Booking booking){
+    public void addBooking(Booking booking) throws IndexOutOfBoundsException {
         if (bookingList.size() < cinema.getMAX_SEATS()){
             bookingList.add(booking);
         } else {

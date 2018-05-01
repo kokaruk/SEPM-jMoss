@@ -1,24 +1,32 @@
 package dal;
 
-import assets.ConfigFileMissingException;
 import assets.HelperFunctions;
 import model.Cinema;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
+ * Real implementation of Cinema repo. Interacts with Data Reader class
  * @author dimz
  * @since 24/4/18.
  */
 final class CinemaRepo implements ICinemaRepoDAL {
-
+    private static Logger logger = LogManager.getLogger();
     private final static String CINEMA_FILE;
+
     static {
         String CINEMA_FILE1;
         try {
             CINEMA_FILE1 = HelperFunctions.getConfigReader().getConfigString("CINEMA_FILE");
-        } catch (ConfigFileMissingException e){
+        } catch (IOException e){
             CINEMA_FILE1 = "";
+            logger.fatal(e.toString());
         }
         CINEMA_FILE = CINEMA_FILE1;
     }

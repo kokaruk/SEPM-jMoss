@@ -1,6 +1,7 @@
 package dal;
 
 /**
+ * Factory class for repo implementations, required for fake implementation injections.
  * @author dimz
  * @since 27/4/18.
  */
@@ -12,8 +13,6 @@ public final class DALFactory {
     static private IBookingRepoDAL bookingRepoDAL;
 
     /**
-     * Factory method for repo implementation
-     *
      * @return Singleton instance, implementation of  IUserRepoDAL Interface
      */
     public static IUserRepoDAL getUserRepoDAL() {
@@ -33,6 +32,7 @@ public final class DALFactory {
         DALFactory.userRepoDAL = userRepoDAL_Fake;
     }
 
+    // all methods below follow the same pattern
     public static ICinemaRepoDAL getCinemaRepoDAL() {
         if (cinemaRepoDAL == null){
             setCinemaRepoDAL(CinemaRepo.getInstance());

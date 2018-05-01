@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * all movies view
  * @author dimz
  * @since 25/4/18.
  */

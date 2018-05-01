@@ -1,24 +1,29 @@
 package dal;
 
-import assets.ConfigFileMissingException;
 import assets.HelperFunctions;
 import model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
+ * Real implementation of Users repo. Interacts with Data Reader class
  * @author dimz
  * @since 21/4/18.
  */
 final class UserRepo implements IUserRepoDAL {
     private final static String USERS_FILE;
+    private static Logger logger = LogManager.getLogger();
     static {
         String USERS_FILE1;
         try {
             USERS_FILE1 = HelperFunctions.getConfigReader().getConfigString("USERS_FILE");
-        } catch (ConfigFileMissingException e) {
+        } catch (IOException e) {
+            logger.fatal(e.toString());
             USERS_FILE1 = "";
         }
         USERS_FILE = USERS_FILE1;

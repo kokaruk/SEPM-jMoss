@@ -26,9 +26,10 @@ public interface IConfigFileReader {
      * @return string of property value
      * @throws ConfigFileMissingException if passed URI doesn't exist
      */
-    String getConfigString(String myPropertyName) throws ConfigFileMissingException;
+    String getConfigString(String myPropertyName) throws IOException;
 
     /**
+     * map of Properties, read from file.
      * @return returns map of properties as Map of HashTable
      * @throws IOException if there are issues reading the file
      */

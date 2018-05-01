@@ -10,9 +10,7 @@ public enum MovieClassification {
     M("M"),
     MA15("MA15+");
 
-
     private final String classification;
-
 
     MovieClassification(String classification) {
         this.classification = classification;

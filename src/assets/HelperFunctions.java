@@ -1,6 +1,7 @@
 package assets;
 
 /**
+ * collection of static helper functions
  * @author dimz
  * @since 21/4/18.
  */
@@ -25,7 +26,7 @@ public final class HelperFunctions {
      *
      * @param propertyReader_Fake expects a fake implementation of properties reader interface.
      */
-    public static void setCustomReader(IConfigFileReader propertyReader_Fake) {
+    static void setCustomReader(IConfigFileReader propertyReader_Fake) {
         HelperFunctions.propertyReader = propertyReader_Fake;
     }
 

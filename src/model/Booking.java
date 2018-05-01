@@ -1,6 +1,7 @@
 package model;
 
 /**
+ * booking class
  * @author dimz
  * @since 26/4/18.
  */
