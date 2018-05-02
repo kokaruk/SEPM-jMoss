@@ -1,5 +1,7 @@
 package view;
 
+import java.util.Scanner;
+
 /**
  * @author dimz
  * @since 21/4/18.
@@ -26,6 +28,21 @@ public abstract class JMossView {
      * @return corresponding values based on user input
      */
     public abstract String getInput();
+
+    /**
+     * get input integer
+     */
+    int getInputInt(){
+        initInput();
+        Scanner scanner = new Scanner(System.in);
+        Integer option = 0;
+        try {
+            option = scanner.nextInt();
+        } catch (Exception e) {
+            setError(true);
+        }
+        return option;
+    }
 
     /**
      * init user input screen

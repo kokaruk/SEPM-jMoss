@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
  * @author dimz
  * @since 25/4/18.
  */
-public class AllMovies extends JMossView {
+public class AllMoviesSessions extends JMossView {
 
-    private final int MAX_MOVIE_STRING_LENGHT = 14;
+    private final int MAX_MOVIE_STRING_LENGHT = 14; // length of a movie name string for large table.
 
-    public AllMovies(IController controller){
+    public AllMoviesSessions(IController controller){
 
         String header =
                 "                   ********************************************************************************\n" +
@@ -63,15 +63,7 @@ public class AllMovies extends JMossView {
 
     @Override
     public String getInput() {
-        initInput();
-        Scanner scanner = new Scanner(System.in);
-        Integer option = 0;
-        try {
-            option = scanner.nextInt();
-        } catch (Exception e) {
-            setError(true);
-        }
-        switch (option) {
+        switch (super.getInputInt()) {
             case 1: return "BookingClerkMainMenu";
             default: return "unknown";
         }

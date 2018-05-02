@@ -35,7 +35,7 @@ public class JMossBookingClerkController implements IController {
     @SuppressWarnings("unused")
     JMossBookingClerkController(User user){
         this.user = user;
-        currentMenu =  new BookingClerkMainMenu(this.user.getUserName());
+        currentMenu =  new BookingClerkMainMenu(this);
         cinemas.putAll(DALFactory.getCinemaRepoDAL().getAllCinemas());
         movies.putAll(DALFactory.getMovieRepoDAL().getAllMovies());
         sessions.putAll(DALFactory.getSessionRepoDAL().getAllSessions());
@@ -57,6 +57,15 @@ public class JMossBookingClerkController implements IController {
         activateMenu();
     }
 
+    // instance getters
+    public Map<Integer, Booking> getBookings() {
+        return bookings;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     /**
      * interaction point with view.
      * When requested, current active view returns a string corresponding to a user input
@@ -73,18 +82,6 @@ public class JMossBookingClerkController implements IController {
             case "unknown":
                 currentMenu.setError(true);
                 activateMenu();
-                break;
-            case "BookingClerkMainMenu":try {
-                // make view based on returned string value
-                String viewClassName = "view." + inputString;
-                Class<?> viewClass = Class.forName(viewClassName);
-                Constructor<?> viewClassConstructor = viewClass.getDeclaredConstructor(String.class);
-                currentMenu = (JMossView) viewClassConstructor.newInstance(this.user.getUserName());
-                activateMenu();
-            } catch (Exception e) {
-                // something went wrong
-                activateMenu();
-            }
                 break;
             default: try {
                 // make view based on returned string value

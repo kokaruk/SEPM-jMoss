@@ -19,15 +19,20 @@ import java.util.Set;
 final class CinemaRepo implements ICinemaRepoDAL {
     private static Logger logger = LogManager.getLogger();
     private final static String CINEMA_FILE;
+    private final static int CINEPLEX_COUNT;
 
     static {
         String CINEMA_FILE1;
+        int CINEPLEX_COUNT1;
         try {
             CINEMA_FILE1 = HelperFunctions.getConfigReader().getConfigString("CINEMA_FILE");
+            CINEPLEX_COUNT1 = HelperFunctions.getConfigReader().getConfigInt("CINEPLEX_COUNT");
         } catch (IOException e){
             CINEMA_FILE1 = "";
+            CINEPLEX_COUNT1= 0;
             logger.fatal(e.toString());
         }
+        CINEPLEX_COUNT = CINEPLEX_COUNT1;
         CINEMA_FILE = CINEMA_FILE1;
     }
 
@@ -52,7 +57,7 @@ final class CinemaRepo implements ICinemaRepoDAL {
         Set<List<String>> allFile = CSVUtils.getInstance().readAll(CINEMA_FILE);
         Map<Integer, Cinema> allCinemas = new HashMap<>();
         try {
-            allFile.forEach(cinemaRow ->
+            allFile.stream().limit(CINEPLEX_COUNT).forEach(cinemaRow ->
                     allCinemas.put(Integer.parseInt(cinemaRow.get(0)),
                             new Cinema(cinemaRow.get(1),
                                     Integer.parseInt(cinemaRow.get(2)))));

@@ -3,11 +3,13 @@ package view;
  * @author Calvin and Dimi
  */
 
+import controller.IController;
+import controller.JMossBookingClerkController;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class BookingClerkMainMenu extends JMossView {
 
@@ -16,14 +18,15 @@ public class BookingClerkMainMenu extends JMossView {
     private String greetingsPostfix = "\t\t\t********       Welcome to movie search and booking system.  ********************\n";
 
 
-    private String MenuOptions = "1. See All Movies\n" +
+    private String menuOptions = "1. See All Movies\n" +
                                  "2. Find A Movie\n" +
                                  "3. Cinemas\n" +
                                  "4. Add Booking\n" +
                                  "5. Delete Booking\n" +
                                  "6. Exit";
 
-    public BookingClerkMainMenu(String userName) {
+    public BookingClerkMainMenu(IController controller) {
+        String userName = ((JMossBookingClerkController)controller).getUser().getUserName();
         String pathToAsciFile = "assets/ascii_art.txt";
         File asciArtFile = new File(pathToAsciFile);
         // check if running from IDE or console as relative path will differ
@@ -40,7 +43,7 @@ public class BookingClerkMainMenu extends JMossView {
                             userNameGreetingPrefix +
                             greetingsPostfix +
                             greetingsPrefix + "\n" +
-                            MenuOptions;
+                    menuOptions;
 
 
             setMyContent(menuText);
@@ -48,24 +51,14 @@ public class BookingClerkMainMenu extends JMossView {
         } catch (IOException ex) {
             System.out.println("Asset header not found");
         }
-
     }
 
     public String getInput() {
-        initInput();
-        System.out.println();
-        Scanner scanner = new Scanner(System.in);
-        Integer option = 0;
-        try {
-            option = scanner.nextInt();
-        } catch (Exception e) {
-            setError(true);
-        }
-        switch (option) {
-            case 1: return "AllMovies";
+        switch (super.getInputInt()) {
+            case 1: return "AllMoviesSessions";
+            case 4: return "AddBooking";
             case 6: return "exit";
             default: return "unknown";
         }
     }
-
 }
