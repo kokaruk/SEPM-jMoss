@@ -14,6 +14,7 @@ public class Session {
     private final int cinemaId;
     private Movie movie;
     private Cinema cinema;
+    private int availableSeats;
     private List<Booking> bookingList;
 
     public Session(int sessionDay, int sessionTime, int movieId, int cinemaId) {
@@ -31,6 +32,7 @@ public class Session {
 
     public void setCinema(Cinema cinema) {
         this.cinema = cinema;
+        availableSeats = cinema.getMAX_SEATS();
         cinema.addSession(this);
     }
 

@@ -2,6 +2,7 @@ package view;
 
 import controller.IController;
 import controller.JMossBookingClerkController;
+import model.Booking;
 import model.Movie;
 import model.Session;
 
@@ -15,9 +16,8 @@ import java.util.Scanner;
 
 public class AddBooking extends JMossView{
 
-    private String custEmail;
-    private Integer postCode;
     private IController controller;
+    private Booking booking;
 
     public AddBooking(IController controller) {
         this.controller = controller;
@@ -28,8 +28,9 @@ public class AddBooking extends JMossView{
     public String getInput() {
         switch (super.getInputInt()) {
             case 1: System.out.print("Email: ");
-                custEmail = String.format("Customer email: %s\n",getEmailFromUserInput());
-                postCode = getPostcodeFromUserInout();
+                String custEmail = getEmailFromUserInput();
+                int postCode = getPostcodeFromUserInout();
+                booking = new Booking(custEmail, postCode);
                 buildMyContent();
                 return getInput();
             case 2: return Integer.toString(addMovie().getMovieId()) ;
@@ -62,7 +63,7 @@ public class AddBooking extends JMossView{
 
     private Integer getMovieNumber(){
         Scanner scanner = new Scanner(System.in);
-        String wrongMovieNumber = "\033[31mWrong movie number. Try again";
+        String wrongMovieNumber = "\033[31mWrong movie number. Try again\033[37m";
         System.out.print("Movie number: ");
         Integer movieNumber;
         try {
@@ -90,7 +91,7 @@ public class AddBooking extends JMossView{
         // output sessions
         StringBuilder sessions = new StringBuilder("Pick session\n\r");
         for( int i = 0; i < movie.getSessions().size(); i++ ){
-            sessions.append(String.format("%d. %s %d",  (i+1), // session row number
+            sessions.append(String.format("%d. %s %d\n\r",  (i+1), // session row number
                     movie.getSessions().get(i).getCinema().getCinemaName(), // cinema name
                     movie.getSessions().get(i).getSessionTime())); // time
         }
@@ -158,16 +159,19 @@ public class AddBooking extends JMossView{
                         "                   ********************             Booking Status             ********************\n" +
                         "                   ********************************************************************************\n\n";
         String menuOptions = "\n\n1. Add customer details\n" +
-                "2. Add A movie\n" +
-
+                "2. Select a movie\n" +
+                "3. Select a cinema\n" +
                 "6. Return to previous";
 
         int bookingNumber = ((JMossBookingClerkController) controller).getBookings().size() + 1;
 
         StringBuilder stringBuilder = new StringBuilder(header);
         stringBuilder.append(String.format("Booking number: %d\n", bookingNumber));
-        if(custEmail != null) stringBuilder.append(custEmail);
-        if(postCode != null) stringBuilder.append(String.format("Postcode: %d", postCode));
+        // if booking object present, append info from it
+        if(booking != null) {
+            stringBuilder.append(String.format("Customer email: %s\n",booking.getCustomerEmail()));
+            stringBuilder.append(String.format("Postcode: %d", booking.getSuburbPostcode()));
+        }
         stringBuilder.append(menuOptions);
 
         setMyContent(stringBuilder.toString());
