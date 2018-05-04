@@ -56,6 +56,7 @@ public class JMossBookingClerkController implements IController {
         logger.debug(user.getUserName());
         activateMenu();
     }
+    //This code sucks, you know it and I know it.
 
     // instance getters
     public Map<Integer, Booking> getBookings() {
@@ -64,6 +65,14 @@ public class JMossBookingClerkController implements IController {
 
     public User getUser() {
         return user;
+    }
+
+    public Map<Integer, Movie> getMovies() {
+        return movies;
+    }
+
+    public Map<Integer, Session> getSessions() {
+        return sessions;
     }
 
     /**

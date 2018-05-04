@@ -1,12 +1,12 @@
 package model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Movie {
     private String movieName;
     private MovieClassification movieClassification;
-    private Set<Session> sessions;
+    private List<Session> sessions;
 
     public Movie(String movieName, String movieClassification) {
         this.movieName = movieName;
@@ -14,7 +14,7 @@ public class Movie {
     }
 
      void addSession(Session session) {
-        if(sessions == null) sessions = new LinkedHashSet<>(); // lazy instantiate
+        if(sessions == null) sessions = new ArrayList<>(); // lazy instantiate
         this.sessions.add(session);
     }
 
@@ -24,5 +24,9 @@ public class Movie {
 
     public String getMovieClassification() {
         return movieClassification.getClassification();
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
     }
 }
