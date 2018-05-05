@@ -2,12 +2,17 @@ package view;
 
 import controller.IController;
 import controller.JMossBookingClerkController;
+import dal.DALFactory;
 import model.Booking;
+import model.Cinema;
 import model.Movie;
 import model.Session;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * @author dimz
@@ -18,6 +23,7 @@ public class AddBooking extends JMossView{
 
     private IController controller;
     private Booking booking;
+    private Integer bookingNumber;
 
     public AddBooking(IController controller) {
         this.controller = controller;
@@ -27,102 +33,130 @@ public class AddBooking extends JMossView{
     @Override
     public String getInput() {
         switch (super.getInputInt()) {
-            case 1: System.out.print("Email: ");
+            case 1:
                 String custEmail = getEmailFromUserInput();
                 int postCode = getPostcodeFromUserInout();
-                booking = new Booking(custEmail, postCode);
+                if(booking==null) {
+                    booking = new Booking(custEmail, postCode);
+                } else {
+                    booking.setCustomerEmail(custEmail);
+                    booking.setSuburbPostcode(postCode);
+                }
                 buildMyContent();
                 return getInput();
-            case 2: return Integer.toString(addMovie().getMovieId()) ;
-
-            case 6: return "BookingClerkMainMenu";
+            case 2:
+                if(booking == null) booking = new Booking();
+                addBookingStartingFromAMovie();
+                buildMyContent();
+                return getInput();
+                // if there is booking object and it has selected movie
+            case 6: if(booking != null && confirmSaveBooking() && booking.getBookingLines().size() > 0 ){
+                // save booking logic goes here
+                bookingSave();
+                return "BookingClerkMainMenu";
+            } else {
+                return "BookingClerkMainMenu";
+            }
             default: return "unknown";
         }
     }
 
     /**
-     * add movie to this booking
+     * add booking starting from a movie
      */
-    private Session addMovie(){
+    private void addBookingStartingFromAMovie(){
         ViewHelper.clearScreen();
-        // output all movies
-        StringBuilder moviesSelection = new StringBuilder("What Movie?\n");
-
-        /*
-        *********    drunk, fix later...maybe    ***************
-         */
-
+        // build movie request string
+        StringBuilder moviesSelection = new StringBuilder();
         for(Map.Entry<Integer, Movie> movieEntry : ((JMossBookingClerkController) controller).getMovies().entrySet()){
-            moviesSelection.append(String.format("%d. %s\n", movieEntry.getKey(), movieEntry.getValue().getMovieName()));
+            moviesSelection.append(String.format("%d. %s (%s)\n",
+                    movieEntry.getKey(),
+                    movieEntry.getValue().getMovieName(),
+                    movieEntry.getValue().getMovieClassification()
+            ));
         }
+        // output movie request
         System.out.println(moviesSelection.toString());
-
-        return getSession(((JMossBookingClerkController) controller).getMovies().get(getMovieNumber()));
+        System.out.print("Movie: ");
+        int movieNumber = getIntFromUser(((JMossBookingClerkController) controller).getMovies().size());
+        Movie movie = ((JMossBookingClerkController) controller).getMovies().get(movieNumber); // searching by key
+        Session bookingSession = getSessionFromAMovie(movie);
+        // get available seats from session
+        int availableSeatsInSession = bookingSession.getAvailableSeats();
+        System.out.print("Seats:");
+        int seats = getIntFromUser(availableSeatsInSession);
+        booking.addSession(bookingSession, seats); // ++ compensates for -- prefix in getIntFromUser
     }
 
-
-    private Integer getMovieNumber(){
-        Scanner scanner = new Scanner(System.in);
-        String wrongMovieNumber = "\033[31mWrong movie number. Try again\033[37m";
-        System.out.print("Movie number: ");
-        Integer movieNumber;
-        try {
-            movieNumber = scanner.nextInt();
-        } catch (Exception ex) {
-            // don't care what exception, just try again
-            System.out.println(wrongMovieNumber);
-            movieNumber = getMovieNumber();
-        }
-
-        // if number is incorrect
-        if(movieNumber<1 || movieNumber > ((JMossBookingClerkController)controller).getMovies().size()){
-            // incorrect number
-            System.out.println(wrongMovieNumber);
-            movieNumber = getMovieNumber();
-        }
-
-        return movieNumber;
-
-    }
-
-
-    private Session getSession(Movie movie){
+    /**
+     * get session from provided movie when cinema is not selected
+      * @param movie selected movie
+     * @return session for booking
+     */
+    private Session getSessionFromAMovie(Movie movie){
         ViewHelper.clearScreen();
+        // build collection of cinemas this movie runs
+        List<Cinema> cinemas = getMovieCinemas(movie);
+        // output cinema options
+        StringBuilder cinemaOptions = new StringBuilder();
+        for(int i = 0; i< cinemas.size(); i++){
+            cinemaOptions.append(String.format("%d. %s\n", (i+1), cinemas.get(i).getCinemaName()));
+        }
+        System.out.println(cinemaOptions.toString() + "\n");
+        System.out.print("Cinema: ");
+        // get which cinema they wat to go
+        Cinema cinema = cinemas.get(getIntFromUser(cinemas.size())-1) ;
+
+        // list of sessions based on movie and cinema
+        List<Session> sessions = getSessionsList(cinema, movie);
         // output sessions
-        StringBuilder sessions = new StringBuilder("Pick session\n\r");
-        for( int i = 0; i < movie.getSessions().size(); i++ ){
-            sessions.append(String.format("%d. %s %d\n\r",  (i+1), // session row number
-                    movie.getSessions().get(i).getCinema().getCinemaName(), // cinema name
-                    movie.getSessions().get(i).getSessionTime())); // time
-        }
-        System.out.println(sessions.toString());
-        return movie.getSessions().get(getSessionNumber(movie));
+        StringBuilder sessionsOptions = new StringBuilder("Pick session\n\r");
+        for( int i = 0; i <sessions.size(); i++ ){
+            sessionsOptions.append(String.format("%d. Day: %s Time: %d  Seats: %d\n\r",
+                    (i+1), // session row number
+                    sessions.get(i).getSessionDay(), // session day
+                    sessions.get(i).getSessionTime(), // time
+                    sessions.get(i).getAvailableSeats()
+            ));}
+        System.out.println(sessionsOptions.toString());
+        // get session from the list
+        System.out.print("Session: ");
+        return sessions.get(getIntFromUser(sessions.size())-1);
     }
 
-    private int getSessionNumber(Movie movie){
-        Scanner scanner = new Scanner(System.in);
-        String wrongSessionNumber = "\033[31mWrong session number. Try again";
-        System.out.println("Session: ");
-        Integer sessionNumber;
-        try {
-            System.out.println(wrongSessionNumber);
-            sessionNumber = scanner.nextInt();
-        } catch (Exception ex){
-            // don't care what exception, just try again
-            sessionNumber = getSessionNumber(movie);
+    /**
+     * build list of cinemas where a movie is being shown
+     * @param movie movie to get cinemas from
+     * @return List of cinemas
+     */
+    private List<Cinema> getMovieCinemas(Movie movie){
+        List<Cinema> cinemas = new ArrayList<>();
+        for (Session session : movie.getSessions()){
+            if(!cinemas.contains(session.getCinema())) cinemas.add(session.getCinema());
         }
-
-        if(sessionNumber<0 || sessionNumber > movie.getSessions().size()){
-            System.out.println(wrongSessionNumber);
-            sessionNumber = getSessionNumber(movie);
-        }
-
-        return sessionNumber;
+        return cinemas;
     }
 
+    /**
+     * Builds list of sessions for a movie cinema pair
+     * @param cinema selected cinema
+     * @param movie selected movie
+     * @return list of sessions
+     */
+    private List<Session> getSessionsList(Cinema cinema, Movie movie){
+        return movie.getSessions().stream()
+                .filter(session -> session.getCinema().equals(cinema))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    /**
+     * get email from user input. performs regex validation of email string to confirm valid email entry
+     * @return validated email string
+     */
     private String getEmailFromUserInput() {
         Scanner scanner = new Scanner(System.in);
         String wrongEmailPatternError =  "\033[31mIncorrect email format. Try again";
+        System.out.print("Email: ");
         String custEmail = scanner.nextLine().trim();
         //check regex if string is an actual email
         if (!custEmail.matches("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")){
@@ -132,6 +166,10 @@ public class AddBooking extends JMossView{
         return custEmail;
     }
 
+    /**
+     * get postcode from user input as 4 numbers integer. length == 4
+     * @return postcode
+     */
     private Integer getPostcodeFromUserInout(){
         Scanner scanner = new Scanner(System.in);
         String wrongPostcodeError = "\033[31mIncorrect Postocde format. Try again";
@@ -153,28 +191,94 @@ public class AddBooking extends JMossView{
         return postCode;
     }
 
+    /**
+     * build content of this submenu
+     */
     private void buildMyContent(){
         String header =
                 "                   ********************************************************************************\n" +
                         "                   ********************             Booking Status             ********************\n" +
                         "                   ********************************************************************************\n\n";
-        String menuOptions = "\n\n1. Add customer details\n" +
+        String menuOptions =
+                "\n\n1. Add\\Edit customer details\n" +
                 "2. Select a movie\n" +
-                "3. Select a cinema\n" +
+             //   "3. Select a cinema\n" +
                 "6. Return to previous";
 
-        int bookingNumber = ((JMossBookingClerkController) controller).getBookings().size() + 1;
+        bookingNumber = DALFactory.getBookingRepoDAL().getLargestId() + 1;
 
         StringBuilder stringBuilder = new StringBuilder(header);
         stringBuilder.append(String.format("Booking number: %d\n", bookingNumber));
         // if booking object present, append info from it
         if(booking != null) {
-            stringBuilder.append(String.format("Customer email: %s\n",booking.getCustomerEmail()));
-            stringBuilder.append(String.format("Postcode: %d", booking.getSuburbPostcode()));
+            if(booking.getCustomerEmail()!=null) stringBuilder.append(String.format("Customer email: %s\n",booking.getCustomerEmail()));
+            if(booking.getSuburbPostcode()!=0) stringBuilder.append(String.format("Postcode: %d\n", booking.getSuburbPostcode()));
+            if (booking.getBookingLines().size()!=0){
+                for (Map.Entry<Integer, Booking.Pair<Session, Integer>> bookingLine : booking.getBookingLines().entrySet()){
+                    stringBuilder.append(String.format("%d. %s | Seats: %d\n",
+                            bookingLine.getKey(),
+                            bookingLine.getValue().getSession().getMovie().getMovieName(),
+                            bookingLine.getValue().getSeatsBooked()));
+                }
+            }
         }
         stringBuilder.append(menuOptions);
 
         setMyContent(stringBuilder.toString());
+    }
+
+    /**
+     * ask user for a nunmber input with specified max value
+     * @param maxValue the largest number allowed
+     * @return int from user input
+     */
+    private int getIntFromUser(int maxValue){
+        int number;
+        String wrongNumber = "\033[31mWrong number input. Try again\033[37m";
+        try {
+            Scanner scanner = new Scanner(System.in);
+            number = scanner.nextInt();
+            if(number <1 || number > maxValue){
+                System.out.println(wrongNumber);
+                number = getIntFromUser(maxValue);
+            }
+        } catch (Exception ex){
+            // don't care what exception, just try again
+            System.out.println(wrongNumber);
+            number = getIntFromUser(maxValue);
+        }
+        return number;
+    }
+
+    /**
+     * yes / no save booking
+     */
+    private boolean confirmSaveBooking(){
+        String confirmBookingSavePrompt = "Save existing booking details?\n" +
+                                          "1. Yes\n" +
+                                          "2. No";
+        System.out.println(confirmBookingSavePrompt);
+        return getIntFromUser(2)-1 == 0;
+    }
+
+    /**
+     * gets called when booking object exists and has movies selected and clerk selects 'yes'
+     */
+    private void bookingSave() {
+        // see if booking has customer
+        if(booking.getCustomerEmail() == null || booking.getSuburbPostcode() == 0){
+            String custEmail = getEmailFromUserInput();
+            int postCode = getPostcodeFromUserInout();
+            booking.setCustomerEmail(custEmail);
+            booking.setSuburbPostcode(postCode);
+        }
+        // add booking to every session with seats
+        for(Map.Entry<Integer, Booking.Pair<Session, Integer>> bookingLine : booking.getBookingLines().entrySet() ) {
+            bookingLine.getValue().getSession().addBooking(booking,
+                    bookingLine.getValue().getSeatsBooked());
+        }
+
+        ((JMossBookingClerkController)controller).setBooking(bookingNumber, booking);
     }
 
 

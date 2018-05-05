@@ -171,13 +171,14 @@ class CSVUtils {
 
     /**
      * writes one line to CSV file,
-     * @param values
+     * @param values list of
      * @param filename
-     * @throws IOException
+     * @throws IOException if file write errors
      */
     void writeLine(List<String> values, String filename) throws IOException {
         try (Writer w = new FileWriter(filename, true)) {
             boolean firstVal = true;
+            w.write("\r\n");
             for (String val : values) {
                 if (!firstVal) {
                     w.write(DEFAULT_SEPARATOR);
@@ -193,7 +194,6 @@ class CSVUtils {
                 w.write(DEFAULT_QUOTE);
                 firstVal = false;
             }
-            w.write("\r\n");
         }
     }
 

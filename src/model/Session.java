@@ -2,12 +2,14 @@ package model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author dimz
  * @since 24/4/18.
  */
 public class Session {
+    private final Integer id;
     private final int sessionDay;
     private final int sessionTime;
     private final int movieId;
@@ -17,7 +19,8 @@ public class Session {
     private int availableSeats;
     private List<Booking> bookingList;
 
-    public Session(int sessionDay, int sessionTime, int movieId, int cinemaId) {
+    public Session(int sessionId, int sessionDay, int sessionTime, int movieId, int cinemaId) {
+        id = sessionId;
         this.sessionDay = sessionDay;
         this.sessionTime = sessionTime;
         this.movieId = movieId;
@@ -64,12 +67,40 @@ public class Session {
         return cinema;
     }
 
+    public int getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
     public void addBooking(Booking booking) throws IndexOutOfBoundsException {
-        if (bookingList.size() < cinema.getMAX_SEATS()){
+        int bookingSeats = sessionBookingSeats(booking);
+        if (bookingSeats < availableSeats){
             bookingList.add(booking);
+            availableSeats -= bookingSeats;
         } else {
             throw new IndexOutOfBoundsException("The session is booked out");
         }
+    }
+
+    public void addBooking(Booking booking, int bookingSeats){
+        if (bookingSeats < availableSeats){
+            bookingList.add(booking);
+            availableSeats -= bookingSeats;
+        } else {
+            throw new IndexOutOfBoundsException("The session is booked out");
+        }
+    }
+
+    private Integer sessionBookingSeats(Booking booking){
+        for(Map.Entry<Integer, Booking.Pair<Session, Integer>> bookingLine : booking.getBookingLines().entrySet()){
+            if(bookingLine.getValue().getSession() == this){
+                return bookingLine.getValue().getSeatsBooked();
+            }
+        }
+        return 0;
     }
 
 }

@@ -47,7 +47,7 @@ public class AllMoviesSessions extends JMossView {
                             padRight(movieName, MAX_MOVIE_STRING_LENGHT);
                     movieRow.append(String.format("  %s(%02d)",
                             movieName,
-                            session.getCinema().getMAX_SEATS() - session.getBookingList().size()));
+                            session.getAvailableSeats()));
                 }
                 movieRow.append("\n");
                 stringBuilder.append(movieRow);

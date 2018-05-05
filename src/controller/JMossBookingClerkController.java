@@ -9,6 +9,7 @@ import view.JMossView;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ public class JMossBookingClerkController implements IController {
     private Map<Integer, Cinema> cinemas = new HashMap<>(); // all cinemas
     private Map<Integer, Movie> movies = new HashMap<>(); // all movies
     private Map<Integer, Session> sessions = new HashMap<>(); // all sessions
-    private Map<Integer, Booking> bookings = new HashMap<>(); // all bookings
+    private Map<Integer, Booking> bookings = new LinkedHashMap<>(); // all bookings
 
     /**
      *  Constructor.
@@ -45,6 +46,14 @@ public class JMossBookingClerkController implements IController {
             session.setMovie(movies.get(session.getMovieId()));
             session.setCinema(cinemas.get(session.getCinemaId()));
         }
+        // no good but CBF. loads data from order lines
+        DALFactory.getBookingRepoDAL().getBookingLines().forEach(row -> {
+                    Booking booking = bookings.get(Integer.parseInt(row.get(0)));
+                    Session session = sessions.get(Integer.parseInt(row.get(1)));
+                    booking.addSession(session, Integer.parseInt(row.get(2)));
+                    session.addBooking(booking);
+                }
+        );
     }
 
     public Map<Integer, Cinema> getCinemas() {
@@ -56,11 +65,13 @@ public class JMossBookingClerkController implements IController {
         logger.debug(user.getUserName());
         activateMenu();
     }
-    //This code sucks, you know it and I know it.
 
-    // instance getters
-    public Map<Integer, Booking> getBookings() {
-        return bookings;
+    //This code sucks, you know it and I know it.
+    public void setBooking(Integer bookingNumber, Booking booking) {
+        bookings.put(bookingNumber, booking);
+        // not sure if it the right spot.
+        // drunk will fix later... maybe
+        DALFactory.getBookingRepoDAL().addNewBooking(bookingNumber, booking);
     }
 
     public User getUser() {
@@ -71,9 +82,7 @@ public class JMossBookingClerkController implements IController {
         return movies;
     }
 
-    public Map<Integer, Session> getSessions() {
-        return sessions;
-    }
+
 
     /**
      * interaction point with view.

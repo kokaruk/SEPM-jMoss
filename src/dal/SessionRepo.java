@@ -54,7 +54,8 @@ final class SessionRepo implements ISessionRepoDAL {
         try {
             allFile.forEach(sessionRow ->
                     allSessions.put(Integer.parseInt(sessionRow.get(0)),
-                            new Session(Integer.parseInt(sessionRow.get(1)),
+                            new Session(Integer.parseInt(sessionRow.get(0)),
+                                        Integer.parseInt(sessionRow.get(1)),
                                         Integer.parseInt(sessionRow.get(2)),
                                     Integer.parseInt(sessionRow.get(3)),
                                     Integer.parseInt(sessionRow.get(4))

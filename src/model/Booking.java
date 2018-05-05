@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +15,13 @@ public class Booking {
     // order lines will be stored here
     private Map<Integer, Pair<Session, Integer>> bookingLines;
 
+    // default constructor
+    public Booking(){
+        bookingLines = new HashMap<>();
+    }
+
     public Booking(String customerEmail, int suburbPostcode) {
+        this();
         this.customerEmail = customerEmail;
         this.suburbPostcode = suburbPostcode;
     }
@@ -23,15 +30,32 @@ public class Booking {
         return customerEmail;
     }
 
-    public int getSuburbPostcode() {
+    public Integer getSuburbPostcode() {
         return suburbPostcode;
     }
 
-    private class Pair<T extends Session, M extends Integer>  {
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public void setSuburbPostcode(int suburbPostcode) {
+        this.suburbPostcode = suburbPostcode;
+    }
+
+    // invoked when adding new booking line
+    public void addSession(Session session, Integer seats){
+        bookingLines.put(bookingLines.size()+1, new Pair<>(session, seats) );
+    }
+
+    public Map<Integer, Pair<Session, Integer>> getBookingLines() {
+        return bookingLines;
+    }
+
+    public class Pair<T extends Session, M extends Integer>  {
         private T session;
         private M seatsBooked;
 
-        public Pair(T session, M seatsBooked) {
+        Pair(T session, M seatsBooked) {
             this.session = session;
             this.seatsBooked = seatsBooked;
         }
