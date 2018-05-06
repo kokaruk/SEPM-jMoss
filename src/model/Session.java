@@ -77,16 +77,11 @@ public class Session {
 
     public void addBooking(Booking booking) throws IndexOutOfBoundsException {
         int bookingSeats = sessionBookingSeats(booking);
-        if (bookingSeats < availableSeats){
-            bookingList.add(booking);
-            availableSeats -= bookingSeats;
-        } else {
-            throw new IndexOutOfBoundsException("The session is booked out");
-        }
+        addBooking(booking, bookingSeats);
     }
 
     public void addBooking(Booking booking, int bookingSeats){
-        if (bookingSeats < availableSeats){
+        if (bookingSeats <= availableSeats){
             bookingList.add(booking);
             availableSeats -= bookingSeats;
         } else {
