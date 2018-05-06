@@ -52,7 +52,7 @@ final class UserRepo implements IUserRepoDAL {
             InvocationTargetException {
         List<String> userLine = CSVUtils.getInstance().readAndSearch(USERS_FILE, username);
         User aUser = null;
-        if (userLine.size() > 0 && userLine.contains(username) && userLine.contains(password)){
+        if (userLine.size() > 0 && userLine.get(1).equals(username) && userLine.get(2).equals(password)){
             String type = "model." + userLine.get(3);
             Class<?> userClass = Class.forName(type);
             Constructor<?> userConstructor = userClass.getConstructor(int.class, String.class);
