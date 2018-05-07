@@ -155,7 +155,7 @@ public class AddBooking extends JMossView{
      */
     private String getEmailFromUserInput() {
         Scanner scanner = new Scanner(System.in);
-        String wrongEmailPatternError =  "\033[31mIncorrect email format. Try again";
+        String wrongEmailPatternError =  "\033[31mIncorrect email format. Try again\033[37m";
         System.out.print("Email: ");
         String custEmail = scanner.nextLine().trim();
         //check regex if string is an actual email
