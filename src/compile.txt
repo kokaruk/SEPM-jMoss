@@ -1,10 +1,16 @@
 to compile:
 1. make sure you are in root folder of the project.
 2. run the following command:
+(mac)
 javac -d out -proc:none -cp .:lib/*:src:src/*.java src/model/*.java src/controller/*.java src/view/*.java
+(windows)
+javac -d out -proc:none -cp .;lib/*;src;src/*.java src/model/*.java src/controller/*.java src/view/*.java
 
-to run:`
+to run:
 1. Make sure all *.CSV files are copied to /out folder
 2. change to /out folder
 3. run the following command:
+(mac)
 java -cp .:../:../lib/*:../src/properties/ jMoss
+(windows)
+java -cp .;../;../lib/*;../src/properties/ jMoss
