@@ -44,8 +44,23 @@ public class Booking {
 
     // invoked when adding new booking line
     public void addSession(Session session, Integer seats){
-        bookingLines.put(bookingLines.size()+1, new Pair<>(session, seats) );
+        if( ! this.hasSession(session)){
+            bookingLines.put(bookingLines.size()+1, new Pair<>(session, seats) );
+        }
     }
+
+    /**
+     * method to check if booking lines contains the session already
+     * @return true if this session present in this booking
+     */
+    public boolean hasSession(Session session){
+        for (Map.Entry<Integer, Pair<Session, Integer>> sessionLine : bookingLines.entrySet() ){
+            if(sessionLine.getValue().session == session) return true;
+        }
+        return false;
+    }
+
+
 
     public Map<Integer, Pair<Session, Integer>> getBookingLines() {
         return bookingLines;

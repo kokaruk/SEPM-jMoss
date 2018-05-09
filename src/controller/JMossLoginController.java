@@ -80,7 +80,7 @@ public class JMossLoginController implements IController {
         {
             // some crazy voodoo below. Stack overflow rules!!!
             byte[] buf = new byte[ 1 ];
-            AudioFormat af = new AudioFormat( (float )44100, 8, 1, true, false );
+            AudioFormat af = new AudioFormat( (float )64100, 8, 1, true, false );
             try {
                 SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
                 sdl.open();

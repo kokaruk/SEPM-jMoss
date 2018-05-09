@@ -109,6 +109,9 @@ public class AddBooking extends JMossView{
 
         // list of sessions based on movie and cinema
         List<Session> sessions = getSessionsList(cinema, movie);
+        // iterate over sessions and remove already booked ones
+        sessions.removeIf(session -> this.booking.hasSession(session));
+
         // output sessions
         StringBuilder sessionsOptions = new StringBuilder("Pick session\n\r");
         for( int i = 0; i <sessions.size(); i++ ){
@@ -172,7 +175,7 @@ public class AddBooking extends JMossView{
      */
     private Integer getPostcodeFromUserInout(){
         Scanner scanner = new Scanner(System.in);
-        String wrongPostcodeError = "\033[31mIncorrect Postcode format. Try again\033[37m";
+        String wrongPostcodeError = "\033[31mIncorrect postcode format. Try again\033[37m";
         System.out.print("Post code: ");
         Integer postCode;
 
