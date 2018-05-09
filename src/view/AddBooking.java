@@ -172,7 +172,7 @@ public class AddBooking extends JMossView{
      */
     private Integer getPostcodeFromUserInout(){
         Scanner scanner = new Scanner(System.in);
-        String wrongPostcodeError = "\033[31mIncorrect Postocde format. Try again\033[37m";
+        String wrongPostcodeError = "\033[31mIncorrect Postcode format. Try again\033[37m";
         System.out.print("Post code: ");
         Integer postCode;
 
