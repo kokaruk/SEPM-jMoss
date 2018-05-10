@@ -1,1 +1,1 @@
-# sepm-assignment-2
+# Software Engeineering Project Management. Assignemt 2
