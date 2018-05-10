@@ -83,7 +83,7 @@ public class AddBooking extends JMossView{
         Session bookingSession = getSessionFromAMovie(movie);
         if (bookingSession == null){
             ViewHelper.clearScreen();
-
+            System.out.println("\033[31mNo available sessions for this movie.Try again\n\r\033[0m");
             addBookingStartingFromAMovie();
         } else {
             // get available seats from session
@@ -103,6 +103,7 @@ public class AddBooking extends JMossView{
         // build collection of cinemas this movie runs
         List<Cinema> cinemas = getMovieCinemas(movie);
         // output cinema options
+        if (cinemas.size() == 0) return null;
         StringBuilder cinemaOptions = new StringBuilder();
         for(int i = 0; i< cinemas.size(); i++){
             cinemaOptions.append(String.format("%d. %s\n", (i+1), cinemas.get(i).getCinemaName()));
@@ -146,7 +147,7 @@ public class AddBooking extends JMossView{
     private List<Cinema> getMovieCinemas(Movie movie){
         List<Cinema> cinemas = new ArrayList<>();
         for (Session session : movie.getSessions()){
-            if(!cinemas.contains(session.getCinema()) && session.getAvailableSeats() > 0) cinemas.add(session.getCinema());
+            if(!this.booking.hasSession(session) && !cinemas.contains(session.getCinema()) && session.getAvailableSeats() > 0) cinemas.add(session.getCinema());
         }
         return cinemas;
     }
