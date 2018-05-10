@@ -77,3 +77,7 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
+
+#bookings data
+booking.csv
+bookinglines.csv
