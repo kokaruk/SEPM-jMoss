@@ -8,7 +8,8 @@ javac -d out -proc:none -cp .;lib/*;src;src/*.java src/model/*.java src/controll
 
 to run:
 1. Make sure all *.CSV files are copied to /out folder
-2. change to /out folder
+2. change to /out folder:
+   cd out
 3. run the following command:
 (mac)
 java -cp .:../:../lib/*:../src/properties/ jMoss

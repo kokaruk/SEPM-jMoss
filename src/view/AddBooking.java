@@ -8,10 +8,9 @@ import model.Cinema;
 import model.Movie;
 import model.Session;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -115,10 +114,10 @@ public class AddBooking extends JMossView{
         // output sessions
         StringBuilder sessionsOptions = new StringBuilder("Pick session\n\r");
         for( int i = 0; i <sessions.size(); i++ ){
-            sessionsOptions.append(String.format("%d. Day: %s Time: %d  Seats: %d\n\r",
+            sessionsOptions.append(String.format("%d. %s  %d:00 | Available seats: %d\n\r",
                     (i+1), // session row number
-                    sessions.get(i).getSessionDay(), // session day
-                    sessions.get(i).getSessionTime(), // time
+                    DayOfWeek.of(sessions.get(i).getSessionDay()).getDisplayName(TextStyle.SHORT,Locale.CANADA), // session day
+                    sessions.get(i).getSessionTime() , // time
                     sessions.get(i).getAvailableSeats()
             ));}
         System.out.println(sessionsOptions.toString());
