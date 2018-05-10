@@ -64,7 +64,7 @@ public class JMossLoginController implements IController {
             }
 
         } else {
-            System.out.println("\033[31mExhausted maximum allowed login attempts");
+            System.out.println("\033[31mExhausted maximum allowed login attempts\033[0m");
             System.exit(1);
         }
     }
