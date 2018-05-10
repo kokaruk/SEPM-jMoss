@@ -45,6 +45,7 @@ public class AddBooking extends JMossView{
                 return getInput();
             case 2:
                 if(booking == null) booking = new Booking();
+                ViewHelper.clearScreen();
                 addBookingStartingFromAMovie();
                 buildMyContent();
                 return getInput();
@@ -64,7 +65,6 @@ public class AddBooking extends JMossView{
      * add booking starting from a movie
      */
     private void addBookingStartingFromAMovie(){
-        ViewHelper.clearScreen();
         // build movie request string
         StringBuilder moviesSelection = new StringBuilder();
         for(Map.Entry<Integer, Movie> movieEntry : ((JMossBookingClerkController) controller).getMovies().entrySet()){
@@ -79,12 +79,19 @@ public class AddBooking extends JMossView{
         System.out.print("Movie: ");
         int movieNumber = getIntFromUser(((JMossBookingClerkController) controller).getMovies().size());
         Movie movie = ((JMossBookingClerkController) controller).getMovies().get(movieNumber); // searching by key
+        ViewHelper.clearScreen();
         Session bookingSession = getSessionFromAMovie(movie);
-        // get available seats from session
-        int availableSeatsInSession = bookingSession.getAvailableSeats();
-        System.out.print("Seats:");
-        int seats = getIntFromUser(availableSeatsInSession);
-        booking.addSession(bookingSession, seats); // ++ compensates for -- prefix in getIntFromUser
+        if (bookingSession == null){
+            ViewHelper.clearScreen();
+
+            addBookingStartingFromAMovie();
+        } else {
+            // get available seats from session
+            int availableSeatsInSession = bookingSession.getAvailableSeats();
+            System.out.print("Seats:");
+            int seats = getIntFromUser(availableSeatsInSession);
+            booking.addSession(bookingSession, seats);
+        }
     }
 
     /**
@@ -93,7 +100,6 @@ public class AddBooking extends JMossView{
      * @return session for booking
      */
     private Session getSessionFromAMovie(Movie movie){
-        ViewHelper.clearScreen();
         // build collection of cinemas this movie runs
         List<Cinema> cinemas = getMovieCinemas(movie);
         // output cinema options
@@ -110,7 +116,13 @@ public class AddBooking extends JMossView{
         List<Session> sessions = getSessionsList(cinema, movie);
         // iterate over sessions and remove already booked ones
         sessions.removeIf(session -> this.booking.hasSession(session));
+        // if no sessions left, all either booked out or already added, take a step back
 
+        if (sessions.size() == 0) {
+            ViewHelper.clearScreen();
+            System.out.println("\033[31mNo available sessions for this movie in this cinema.Try again\n\r\033[0m");
+            return getSessionFromAMovie(movie);
+        }
         // output sessions
         StringBuilder sessionsOptions = new StringBuilder("Pick session\n\r");
         for( int i = 0; i <sessions.size(); i++ ){
@@ -134,7 +146,7 @@ public class AddBooking extends JMossView{
     private List<Cinema> getMovieCinemas(Movie movie){
         List<Cinema> cinemas = new ArrayList<>();
         for (Session session : movie.getSessions()){
-            if(!cinemas.contains(session.getCinema())) cinemas.add(session.getCinema());
+            if(!cinemas.contains(session.getCinema()) && session.getAvailableSeats() > 0) cinemas.add(session.getCinema());
         }
         return cinemas;
     }
@@ -147,7 +159,7 @@ public class AddBooking extends JMossView{
      */
     private List<Session> getSessionsList(Cinema cinema, Movie movie){
         return movie.getSessions().stream()
-                .filter(session -> session.getCinema().equals(cinema))
+                .filter(session -> session.getCinema().equals(cinema) && session.getAvailableSeats()>0)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -157,7 +169,7 @@ public class AddBooking extends JMossView{
      */
     private String getEmailFromUserInput() {
         Scanner scanner = new Scanner(System.in);
-        String wrongEmailPatternError =  "\033[31mIncorrect email format. Try again\033[37m";
+        String wrongEmailPatternError =  "\033[31mIncorrect email format. Try again\033[0m";
         System.out.print("Email: ");
         String custEmail = scanner.nextLine().trim();
         //check regex if string is an actual email
@@ -174,7 +186,7 @@ public class AddBooking extends JMossView{
      */
     private Integer getPostcodeFromUserInout(){
         Scanner scanner = new Scanner(System.in);
-        String wrongPostcodeError = "\033[31mIncorrect postcode format. Try again\033[37m";
+        String wrongPostcodeError = "\033[31mIncorrect postcode format. Try again\033[97m";
         System.out.print("Post code: ");
         Integer postCode;
 
@@ -236,7 +248,7 @@ public class AddBooking extends JMossView{
      */
     private int getIntFromUser(int maxValue){
         int number;
-        String wrongNumber = "\033[31mWrong number input. Try again\033[37m";
+        String wrongNumber = "\033[31mWrong number input. Try again\033[0m";
         try {
             Scanner scanner = new Scanner(System.in);
             number = scanner.nextInt();

@@ -12,7 +12,7 @@ public abstract class JMossView {
     private boolean error;
 
     void wrongInput() {
-        System.err.println("\033[31mThis input value is not allowed\n\r\033[37m");
+        System.err.println("\033[31mThis input value is not allowed\n\r\033[0m");
     }
 
     void setMyContent(String myContent) {

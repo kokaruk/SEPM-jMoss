@@ -45,7 +45,7 @@ public class LoginView extends JMossView{
 
     @Override
     public void wrongInput() {
-        System.err.println("\033[31mCan't find username/password combination. Please try again\033[37m");
+        System.err.println("\033[31mCan't find username/password combination. Please try again\033[0m");
     }
 
     @Override
