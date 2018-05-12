@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 public class ConfigFileMissingException extends FileNotFoundException {
 
     ConfigFileMissingException(String missingFile) {
-        super(String.format("\033[31mConfig file %s doesn't exist " +
-                "make sure to transfer to compile folder from sources", missingFile));
+        super(String.format("033[31mConfig file %s doesn't exist " +
+                "make sure to transfer to compile folder from sources033[0m", missingFile));
     }
 }

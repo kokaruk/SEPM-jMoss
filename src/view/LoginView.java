@@ -6,6 +6,8 @@ import java.io.Console;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static view.ViewHelper.ANSI_RESET;
+
 /**
  * @author dimz
  * @since 21/4/18.
@@ -58,6 +60,7 @@ public class LoginView extends JMossView{
 
     @Override
     void buildMyContent() {
+        System.out.print(ANSI_RESET);
         try {
             myContent = HelperFunctions.getConfigReader().getConfigString("LOGIN_VEW_CONTENT");
         } catch (IOException e) {

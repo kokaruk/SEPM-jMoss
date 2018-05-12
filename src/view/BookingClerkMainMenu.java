@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static view.ViewHelper.ANSI_RESET;
+
 public class BookingClerkMainMenu extends JMossView {
     private Map<Integer, String[]> menuOptionsMap;
 
@@ -31,6 +33,7 @@ public class BookingClerkMainMenu extends JMossView {
 
     @Override
     void buildMyContent() {
+        System.out.print(ANSI_RESET);
         menuOptionsMap = new LinkedHashMap<>();
         String greetingsPrefix = "\t\t\t********************************************************************************\n";
 

@@ -6,6 +6,9 @@ import model.Cinema;
 
 import java.util.Map;
 
+import static view.ViewHelper.ANSI_RED;
+import static view.ViewHelper.ANSI_RESET;
+
 /**
  * @author dimz
  * @since 11/5/18.
@@ -18,6 +21,7 @@ public class CineplexSearch extends JMossView {
 
     @Override
     void buildMyContent() {
+        System.out.print(ANSI_RESET);
         String header =
                 "                   ********************************************************************************\n" +
                         "                   ********************              Cinema Status             ********************\n" +
@@ -25,7 +29,7 @@ public class CineplexSearch extends JMossView {
         StringBuilder stringBuilder = new StringBuilder(header);
 
         stringBuilder.append(String
-                .format("\nSelect a cinema # \033[31m(1-%d)\033[0m or type \033[31m0\033[0m to exit to previous menu\n\n",
+                .format("\nSelect a cinema # " + ANSI_RED + "(1-%d)" + ANSI_RESET +" or type "+ ANSI_RED +"0" + ANSI_RESET + " to exit to previous menu\n\n",
                         ((JMossBookingClerkController) controller).getCinemas().size()));
 
         // for each movie

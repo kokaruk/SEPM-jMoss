@@ -6,6 +6,8 @@ import model.Cinema;
 
 import java.util.Map;
 
+import static view.ViewHelper.ANSI_RESET;
+
 /**
  * all movies view
  * @author dimz
@@ -27,7 +29,7 @@ public class AllMoviesSessions extends JMossView {
 
     @Override
     void buildMyContent() {
-
+        System.out.print(ANSI_RESET);
         final int MAX_MOVIE_STRING_LENGTH = 14; // length of a movie name string for large table.
 
         String header =
