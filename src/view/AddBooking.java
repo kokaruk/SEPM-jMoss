@@ -20,18 +20,16 @@ import java.util.stream.Collectors;
 
 public class AddBooking extends JMossView{
 
-    private IController controller;
     private Booking booking;
     private Integer bookingNumber;
 
     public AddBooking(IController controller) {
-        this.controller = controller;
-        buildMyContent();
+        super(controller);
     }
 
     @Override
     public String getInput() {
-        switch (super.getInputInt()) {
+        switch (getInputInt()) {
             case 1:
                 String custEmail = getEmailFromUserInput();
                 int postCode = getPostcodeFromUserInout();
@@ -50,14 +48,12 @@ public class AddBooking extends JMossView{
                 buildMyContent();
                 return getInput();
                 // if there is booking object and it has selected movie
-            case 6: if(booking != null && confirmSaveBooking() && booking.getBookingLines().size() > 0 ){
+            case 6: if(booking != null && booking.getBookingLines().size() > 0 && confirmSaveBooking() ) {
                 // save booking logic goes here
                 bookingSave();
+                }
                 return "BookingClerkMainMenu";
-            } else {
-                return "BookingClerkMainMenu";
-            }
-            default: return "unknown";
+            default: return DEFAULT_RETURN_FROM_USER;
         }
     }
 
@@ -88,7 +84,7 @@ public class AddBooking extends JMossView{
         } else {
             // get available seats from session
             int availableSeatsInSession = bookingSession.getAvailableSeats();
-            System.out.print("Seats:");
+            System.out.print("Seats: ");
             int seats = getIntFromUser(availableSeatsInSession);
             booking.addSession(bookingSession, seats);
         }
@@ -209,7 +205,7 @@ public class AddBooking extends JMossView{
     /**
      * build content of this submenu
      */
-    private void buildMyContent(){
+    void buildMyContent(){
         String header =
                 "                   ********************************************************************************\n" +
                         "                   ********************             Booking Status             ********************\n" +
@@ -239,30 +235,7 @@ public class AddBooking extends JMossView{
         }
         stringBuilder.append(menuOptions);
 
-        setMyContent(stringBuilder.toString());
-    }
-
-    /**
-     * ask user for a nunmber input with specified max value
-     * @param maxValue the largest number allowed
-     * @return int from user input
-     */
-    private int getIntFromUser(int maxValue){
-        int number;
-        String wrongNumber = "\033[31mWrong number input. Try again\033[0m";
-        try {
-            Scanner scanner = new Scanner(System.in);
-            number = scanner.nextInt();
-            if(number <1 || number > maxValue){
-                System.out.println(wrongNumber);
-                number = getIntFromUser(maxValue);
-            }
-        } catch (Exception ex){
-            // don't care what exception, just try again
-            System.out.println(wrongNumber);
-            number = getIntFromUser(maxValue);
-        }
-        return number;
+        myContent = stringBuilder.toString();
     }
 
     /**
@@ -292,9 +265,6 @@ public class AddBooking extends JMossView{
             bookingLine.getValue().getSession().addBooking(booking,
                     bookingLine.getValue().getSeatsBooked());
         }
-
         ((JMossBookingClerkController)controller).setBooking(bookingNumber, booking);
     }
-
-
 }

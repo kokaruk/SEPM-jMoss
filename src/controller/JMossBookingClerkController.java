@@ -25,7 +25,7 @@ public class JMossBookingClerkController implements IController {
     private User user; // user variable to store current logged in user
     private JMossView currentMenu; // current active menu, all menus are extending JMossView
     private Map<Integer, Cinema> cinemas = new HashMap<>(); // all cinemas
-    private Map<Integer, Movie> movies = new HashMap<>(); // all movies
+    private Map<Integer, Movie> movies = new LinkedHashMap<>(); // all movies
     private Map<Integer, Session> sessions = new HashMap<>(); // all sessions
     private Map<Integer, Booking> bookings = new LinkedHashMap<>(); // all bookings
 
@@ -56,17 +56,19 @@ public class JMossBookingClerkController implements IController {
         );
     }
 
+    // getters
     public Map<Integer, Cinema> getCinemas() {
         return cinemas;
     }
-
-    @Override
-    public void start() {
-        logger.debug(user.getUserName());
-        activateMenu();
+    //This code sucks, you know it and I know it.
+    public User getUser() {
+        return user;
+    }
+    public Map<Integer, Movie> getMovies() {
+        return movies;
     }
 
-    //This code sucks, you know it and I know it.
+    // setters
     public void setBooking(Integer bookingNumber, Booking booking) {
         bookings.put(bookingNumber, booking);
         // not sure if it the right spot.
@@ -74,12 +76,10 @@ public class JMossBookingClerkController implements IController {
         DALFactory.getBookingRepoDAL().addNewBooking(bookingNumber, booking);
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public Map<Integer, Movie> getMovies() {
-        return movies;
+    @Override
+    public void start() {
+        logger.debug(user.getUserName());
+        activateMenu();
     }
 
 

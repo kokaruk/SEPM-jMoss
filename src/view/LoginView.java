@@ -12,10 +12,6 @@ import java.util.Scanner;
  */
 public class LoginView extends JMossView{
 
-    public LoginView() throws IOException {
-        setMyContent(HelperFunctions.getConfigReader().getConfigString("LOGIN_VEW_CONTENT"));
-    }
-
     @Override
     public String getInput() {
         initInput();
@@ -58,5 +54,15 @@ public class LoginView extends JMossView{
         } else {
             displayContent();
         }
+    }
+
+    @Override
+    void buildMyContent() {
+        try {
+            myContent = HelperFunctions.getConfigReader().getConfigString("LOGIN_VEW_CONTENT");
+        } catch (IOException e) {
+            System.exit(-1);
+        }
+
     }
 }

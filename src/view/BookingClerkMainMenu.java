@@ -13,19 +13,33 @@ import java.nio.file.Paths;
 
 public class BookingClerkMainMenu extends JMossView {
 
-    private String greetingsPrefix = "\t\t\t********************************************************************************\n";
-
-    private String greetingsPostfix = "\t\t\t********       Welcome to movie search and booking system.  ********************\n";
-
-
-    private String menuOptions = "1. See All Movies\n" +
-                                 "2. Find A Movie\n" +
-                                 "3. Cinemas\n" +
-                                 "4. Add Booking\n" +
-                                 "5. Delete Booking\n" +
-                                 "6. Exit";
-
     public BookingClerkMainMenu(IController controller) {
+        super(controller);
+    }
+
+    public String getInput() {
+        switch (getInputInt()) {
+            case 1: return "AllMoviesSessions";
+            case 3: return "CineplexSearch";
+            case 4: return "AddBooking";
+            case 6: return "exit";
+            default: return "unknown";
+        }
+    }
+
+    @Override
+    void buildMyContent() {
+        String greetingsPrefix = "\t\t\t********************************************************************************\n";
+
+        String greetingsPostfix = "\t\t\t********       Welcome to movie search and booking system.  ********************\n";
+
+
+        String menuOptions = "1. See All Movies\n" +
+                "2. Find A Movie\n" +
+                "3. Cinemas\n" +
+                "4. Add Booking\n" +
+                "5. Delete Booking\n" +
+                "6. Exit";
         String userName = ((JMossBookingClerkController)controller).getUser().getUserName();
         String pathToAsciFile = "assets/ascii_art.txt";
         File asciArtFile = new File(pathToAsciFile);
@@ -33,32 +47,22 @@ public class BookingClerkMainMenu extends JMossView {
         if (!asciArtFile.exists()) pathToAsciFile = "src/" + pathToAsciFile;
 
         try {
-
+            // int 36 length of stars left and right
             String userNameGreetingPrefix = String.format("\t\t\t********       %1$-" + (greetingsPrefix.length() - userName.length() - 36) + "s ******************** \n",
-                    userName.toUpperCase()); // int 23 length of stars left and right
-
+                    userName.toUpperCase());
             String asciArt = new String(Files.readAllBytes(Paths.get(pathToAsciFile)));
             String menuText = asciArt + "\n" +
-                            greetingsPrefix  +
-                            userNameGreetingPrefix +
-                            greetingsPostfix +
-                            greetingsPrefix + "\n" +
+                    greetingsPrefix  +
+                    userNameGreetingPrefix +
+                    greetingsPostfix +
+                    greetingsPrefix + "\n" +
                     menuOptions;
 
 
-            setMyContent(menuText);
+            myContent = menuText;
 
         } catch (IOException ex) {
             System.out.println("Asset header not found");
-        }
-    }
-
-    public String getInput() {
-        switch (super.getInputInt()) {
-            case 1: return "AllMoviesSessions";
-            case 4: return "AddBooking";
-            case 6: return "exit";
-            default: return "unknown";
         }
     }
 }

@@ -1,6 +1,15 @@
 package view;
 
+import controller.IController;
+import model.Cinema;
+import model.Session;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author dimz
@@ -8,15 +17,23 @@ import java.util.Scanner;
  */
 public abstract class JMossView {
 
-    private String myContent;
+    IController controller;
+    String myContent;
     private boolean error;
+    final String DEFAULT_RETURN_FROM_USER = "unknown";
+
+    private int[] hours = {10, 12, 16, 19, 22}; // hours of sessions array
+
+    JMossView(){
+        buildMyContent();
+    }
+    JMossView(IController controller){
+        this.controller = controller;
+        buildMyContent();
+    }
 
     void wrongInput() {
         System.err.println("\033[31mThis input value is not allowed\n\r\033[0m");
-    }
-
-    void setMyContent(String myContent) {
-        this.myContent = myContent;
     }
 
     void displayContent(){
@@ -27,7 +44,7 @@ public abstract class JMossView {
      * gets input from user
      * @return corresponding values based on user input
      */
-    public abstract String getInput();
+     public abstract String getInput();
 
     /**
      * get input integer
@@ -35,7 +52,7 @@ public abstract class JMossView {
     int getInputInt(){
         initInput();
         Scanner scanner = new Scanner(System.in);
-        Integer option = 0;
+        Integer option = -1;
         try {
             option = scanner.nextInt();
         } catch (Exception e) {
@@ -58,6 +75,29 @@ public abstract class JMossView {
         }
     }
 
+    /**
+     * ask user for a nunmber input with specified max value
+     * @param maxValue the largest number allowed
+     * @return int from user input
+     */
+    int getIntFromUser(int maxValue){
+        int number;
+        String wrongNumber = "\033[31mWrong number input. Try again\033[0m";
+        try {
+            Scanner scanner = new Scanner(System.in);
+            number = scanner.nextInt();
+            if(number <1 || number > maxValue){
+                System.out.println(wrongNumber);
+                number = getIntFromUser(maxValue);
+            }
+        } catch (Exception ex){
+            // don't care what exception, just try again
+            System.out.println(wrongNumber);
+            number = getIntFromUser(maxValue);
+        }
+        return number;
+    }
+
 
     /**
      * error. set it to true if calling to get input did not produce required result
@@ -68,6 +108,53 @@ public abstract class JMossView {
 
     boolean isError() {
         return error;
+    }
+
+    /**
+     * build content of this submenu
+     */
+    abstract void buildMyContent();
+
+
+    void makeCinemaMoviesSessionsTable(StringBuilder stringBuilder, Cinema cinema){
+        final int MAX_MOVIE_STRING_LENGTH = 14; // length of a movie name string for large table.
+        String daysRow = "    A. Mon              B. Tue              C. Wed              D. Thur             E. Fri              F. Sat              G. Sun\n";
+        // String cinemaNameRow = String.format("\n%s. %s\n", cinemaEntry.getKey(), cinemaEntry.getValue().getCinemaName());
+        // stringBuilder.append(cinemaNameRow);
+        stringBuilder.append(daysRow);
+        Set<Session> sessions = cinema.getSessions();
+        for (Integer hour : hours) {
+            Predicate<Session> sessionPredicate = session -> session.getSessionTime() == hour;
+            List<Session> hourSessions = sessions
+                    .stream()
+                    .filter(sessionPredicate)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            StringBuilder movieRow = new StringBuilder(hour.toString());
+            for (Session session : hourSessions) {
+                String movieName = session.getMovie().getMovieName();
+                movieName = movieName.length() >= MAX_MOVIE_STRING_LENGTH ?
+                        movieName.substring(0, Math.min(movieName.length(), MAX_MOVIE_STRING_LENGTH)) :
+                        padRight(movieName, MAX_MOVIE_STRING_LENGTH);
+                movieRow.append(String.format("  %s(%02d)",
+                        movieName,
+                        session.getAvailableSeats()));
+            }
+            movieRow.append("\n");
+            stringBuilder.append(movieRow);
+        }
+
+
+    }
+
+    /**
+     * bloody java caches string format! need to have a separate function!!!
+     * pad a string with spaces
+     * @param string for padding
+     * @param n spaces to pad
+     * @return padded string
+     */
+    String padRight(String string, int n){
+        return String.format("%1$-" + n + "s", string);
     }
 
 
