@@ -10,36 +10,47 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class BookingClerkMainMenu extends JMossView {
+    private Map<Integer, String[]> menuOptionsMap;
 
     public BookingClerkMainMenu(IController controller) {
         super(controller);
     }
 
+
+
     public String getInput() {
-        switch (getInputInt()) {
-            case 1: return "AllMoviesSessions";
-            case 3: return "CineplexSearch";
-            case 4: return "AddBooking";
-            case 6: return "exit";
-            default: return "unknown";
-        }
+            initInput();
+            return menuOptionsMap.get(
+                    getIntFromUser(menuOptionsMap.size())
+            )[1];
     }
 
     @Override
     void buildMyContent() {
+        menuOptionsMap = new LinkedHashMap<>();
         String greetingsPrefix = "\t\t\t********************************************************************************\n";
 
         String greetingsPostfix = "\t\t\t********       Welcome to movie search and booking system.  ********************\n";
 
+        int menuOptionsCounter = 0;
 
-        String menuOptions = "1. See All Movies\n" +
-                "2. Find A Movie\n" +
-                "3. Cinemas\n" +
-                "4. Add Booking\n" +
-                "5. Find / Delete Booking\n" +
-                "6. Exit";
+        menuOptionsMap.put(++menuOptionsCounter, new String[]{"See All Movies", "AllMoviesSessions"});
+        menuOptionsMap.put(++menuOptionsCounter, new String[]{"Cinemas", "CineplexSearch"});
+        menuOptionsMap.put(++menuOptionsCounter, new String[]{"Add Booking", "AddBooking"});
+        //menuOptionsMap.put(++menuOptionsCounter, new String[]{"Find / Delete Booking"});
+        menuOptionsMap.put(++menuOptionsCounter, new String[]{"Exit", "exit"});
+
+        StringBuilder menuOptionsBuilder = new StringBuilder();
+
+        for(Map.Entry<Integer, String[]> menuOption : menuOptionsMap.entrySet()){
+            menuOptionsBuilder.append(String.format("%d. ", menuOption.getKey()));
+            menuOptionsBuilder.append(String.format("%s\n",menuOption.getValue()[0]));
+        }
+
         String userName = ((JMossBookingClerkController)controller).getUser().getUserName();
         String pathToAsciFile = "assets/ascii_art.txt";
         File asciArtFile = new File(pathToAsciFile);
@@ -51,15 +62,12 @@ public class BookingClerkMainMenu extends JMossView {
             String userNameGreetingPrefix = String.format("\t\t\t********       %1$-" + (greetingsPrefix.length() - userName.length() - 36) + "s ******************** \n",
                     userName.toUpperCase());
             String asciArt = new String(Files.readAllBytes(Paths.get(pathToAsciFile)));
-            String menuText = asciArt + "\n" +
+            myContent = asciArt + "\n" +
                     greetingsPrefix  +
                     userNameGreetingPrefix +
                     greetingsPostfix +
                     greetingsPrefix + "\n" +
-                    menuOptions;
-
-
-            myContent = menuText;
+                    menuOptionsBuilder.toString();
 
         } catch (IOException ex) {
             System.out.println("Asset header not found");
