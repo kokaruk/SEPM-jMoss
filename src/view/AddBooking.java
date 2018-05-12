@@ -170,7 +170,9 @@ public class AddBooking extends JMossView{
         Scanner scanner = new Scanner(System.in);
         String wrongEmailPatternError =  ANSI_RED + "Incorrect email format. Try again" + ANSI_RESET;
         System.out.print("Email: ");
+        System.out.print(ANSI_GREEN);
         String customerEmail = scanner.nextLine().trim();
+        System.out.print(ANSI_RESET);
         //check regex if string is an actual email
         if (!customerEmail.matches("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")){
             System.err.println(wrongEmailPatternError);
@@ -190,7 +192,9 @@ public class AddBooking extends JMossView{
         Integer postCode;
 
         try {
+            System.out.print(ANSI_GREEN);
             postCode = scanner.nextInt();
+            System.out.print(ANSI_RESET);
         } catch (Exception ex){
             // something went wrong, lets try again
             System.err.println(wrongPostcodeError);

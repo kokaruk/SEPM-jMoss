@@ -53,7 +53,9 @@ public abstract class JMossView {
      */
     int getInputInt(){
         initInput();
+        System.out.print(ANSI_GREEN);
         Scanner scanner = new Scanner(System.in);
+        System.out.print(ANSI_RESET);
         Integer option = -1;
         try {
             option = scanner.nextInt();
@@ -89,6 +91,7 @@ public abstract class JMossView {
             Scanner scanner = new Scanner(System.in);
             System.out.print(ANSI_GREEN);
             number = scanner.nextInt();
+            System.out.print(ANSI_RESET);
             if(number <1 || number > maxValue){
                 System.out.println(wrongNumber);
                 number = getIntFromUser(maxValue);
