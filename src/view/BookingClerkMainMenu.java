@@ -38,7 +38,7 @@ public class BookingClerkMainMenu extends JMossView {
                 "2. Find A Movie\n" +
                 "3. Cinemas\n" +
                 "4. Add Booking\n" +
-                "5. Delete Booking\n" +
+                "5. Find / Delete Booking\n" +
                 "6. Exit";
         String userName = ((JMossBookingClerkController)controller).getUser().getUserName();
         String pathToAsciFile = "assets/ascii_art.txt";
