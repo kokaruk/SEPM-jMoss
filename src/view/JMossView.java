@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static view.ViewHelper.*;
+
 /**
  * @author dimz
  * @since 21/4/18.
@@ -65,7 +67,7 @@ public abstract class JMossView {
      * init user input screen
      */
     void initInput(){
-        ViewHelper.clearScreen();
+        clearScreen();
         if(isError()){
             displayContent();
             wrongInput();
@@ -82,9 +84,10 @@ public abstract class JMossView {
      */
     int getIntFromUser(int maxValue){
         int number;
-        String wrongNumber = "\033[31mWrong number input. Try again\033[0m";
+        String wrongNumber = ANSI_RED + "Wrong number input. Try again" + ANSI_RESET;
         try {
             Scanner scanner = new Scanner(System.in);
+            System.out.print(ANSI_GREEN);
             number = scanner.nextInt();
             if(number <1 || number > maxValue){
                 System.out.println(wrongNumber);

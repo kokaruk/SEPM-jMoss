@@ -13,6 +13,8 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static view.ViewHelper.*;
+
 /**
  * @author dimz
  * @since 2/5/18.
@@ -166,15 +168,15 @@ public class AddBooking extends JMossView{
      */
     private String getEmailFromUserInput() {
         Scanner scanner = new Scanner(System.in);
-        String wrongEmailPatternError =  "\033[31mIncorrect email format. Try again\033[0m";
+        String wrongEmailPatternError =  ANSI_RED + "Incorrect email format. Try again" + ANSI_RESET;
         System.out.print("Email: ");
-        String custEmail = scanner.nextLine().trim();
+        String customerEmail = scanner.nextLine().trim();
         //check regex if string is an actual email
-        if (!custEmail.matches("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")){
+        if (!customerEmail.matches("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")){
             System.err.println(wrongEmailPatternError);
-            custEmail = getEmailFromUserInput();
+            customerEmail = getEmailFromUserInput();
         }
-        return custEmail;
+        return customerEmail;
     }
 
     /**
@@ -183,7 +185,7 @@ public class AddBooking extends JMossView{
      */
     private Integer getPostcodeFromUserInout(){
         Scanner scanner = new Scanner(System.in);
-        String wrongPostcodeError = "\033[31mIncorrect postcode format. Try again\033[0m";
+        String wrongPostcodeError = ANSI_RED + "Incorrect postcode format. Try again" + ANSI_RESET;
         System.out.print("Post code: ");
         Integer postCode;
 
@@ -210,8 +212,13 @@ public class AddBooking extends JMossView{
                 "                   ********************************************************************************\n" +
                         "                   ********************             Booking Status             ********************\n" +
                         "                   ********************************************************************************\n\n";
+
         String menuOptions =
-                "\n\n1. Add\\Edit customer details\n" +
+                "\nPlease start with option " + ANSI_RED + "1" + ANSI_RESET +
+                        " to enter in customer details" +
+                        "\nand then select at Movie in option " +
+                                 ANSI_RED + "2" + ANSI_RESET +
+                        "\n\n1. Add\\Edit customer details\n" +
                 "2. Select a movie\n" +
              //   "3. Select a cinema\n" +
                 "6. Return to previous";
@@ -219,7 +226,7 @@ public class AddBooking extends JMossView{
         bookingNumber = DALFactory.getBookingRepoDAL().getLargestId() + 1;
 
         StringBuilder stringBuilder = new StringBuilder(header);
-        stringBuilder.append(String.format("Booking number: %d\n", bookingNumber));
+        stringBuilder.append(String.format("Booking number: "+ ANSI_CYAN + "%d" + ANSI_RESET + "\n", bookingNumber));
         // if booking object present, append info from it
         if(booking != null) {
             if(booking.getCustomerEmail()!=null) stringBuilder.append(String.format("Customer email: %s\n",booking.getCustomerEmail()));
