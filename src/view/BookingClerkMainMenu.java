@@ -27,7 +27,7 @@ public class BookingClerkMainMenu extends JMossView {
     public String getInput() {
             initInput();
             return menuOptionsMap.get(
-                    getIntFromUser(menuOptionsMap.size())
+                    getInputIntWithBound(menuOptionsMap.size())
             )[1];
     }
 
@@ -44,7 +44,7 @@ public class BookingClerkMainMenu extends JMossView {
         menuOptionsMap.put(++menuOptionsCounter, new String[]{"See All Movies", "AllMoviesSessions"});
         menuOptionsMap.put(++menuOptionsCounter, new String[]{"Cinemas", "CineplexSearch"});
         menuOptionsMap.put(++menuOptionsCounter, new String[]{"Add Booking", "AddBooking"});
-        //menuOptionsMap.put(++menuOptionsCounter, new String[]{"Find / Delete Booking"});
+        menuOptionsMap.put(++menuOptionsCounter, new String[]{"Find / Delete Booking", "BookingViewDelelete"});
         menuOptionsMap.put(++menuOptionsCounter, new String[]{"Exit", "exit"});
 
         StringBuilder menuOptionsBuilder = new StringBuilder();

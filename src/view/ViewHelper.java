@@ -25,5 +25,6 @@ class ViewHelper {
         final String ANSI_HOME = "\u001b[H";
         System.out.print(ANSI_CLS + ANSI_HOME);
         System.out.flush();
+        System.out.print(ANSI_RESET);
     }
 }

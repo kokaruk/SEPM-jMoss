@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class Session {
     }
 
     private Integer sessionBookingSeats(Booking booking){
-        for(Map.Entry<Integer, Booking.Pair<Session, Integer>> bookingLine : booking.getBookingLines().entrySet()){
+        for(Map.Entry<Integer, Booking.Tuple3<Session, Integer, Date>> bookingLine : booking.getBookingLines().entrySet()){
             if(bookingLine.getValue().getSession() == this){
                 return bookingLine.getValue().getSeatsBooked();
             }

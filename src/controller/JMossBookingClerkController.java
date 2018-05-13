@@ -8,6 +8,8 @@ import view.BookingClerkMainMenu;
 import view.JMossView;
 
 import java.lang.reflect.Constructor;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -46,26 +48,36 @@ public class JMossBookingClerkController implements IController {
             session.setMovie(movies.get(session.getMovieId()));
             session.setCinema(cinemas.get(session.getCinemaId()));
         }
-        // no good but CBF. loads data from order lines
-        DALFactory.getBookingRepoDAL().getBookingLines().forEach(row -> {
-                    Booking booking = bookings.get(Integer.parseInt(row.get(0)));
-                    Session session = sessions.get(Integer.parseInt(row.get(1)));
-                    booking.addSession(session, Integer.parseInt(row.get(2)));
-                    session.addBooking(booking);
+        // probably not the best solution. loads data from order lines
+        DALFactory.getBookingRepoDAL()
+                .getBookingLines()
+                .forEach(row -> {
+                    try {
+                        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+                        Booking booking = bookings.get(Integer.parseInt(row.get(0)));
+                        Session session = sessions.get(Integer.parseInt(row.get(1)));
+                        booking.addSession(session, Integer.parseInt(row.get(2)), parser.parse(row.get(3)));
+                        session.addBooking(booking);
+                    } catch (ParseException e){
+                        // do nothing we simply ignore the data, no
+                        // todo may be try repairing in the future
+                    }
                 }
         );
     }
 
-    // getters
+    ////// getters ////
     public Map<Integer, Cinema> getCinemas() {
         return cinemas;
     }
-    //This code sucks, you know it and I know it.
     public User getUser() {
         return user;
     }
     public Map<Integer, Movie> getMovies() {
         return movies;
+    }
+    public Map<Integer, Booking> getBookings() {
+        return bookings;
     }
 
     // setters

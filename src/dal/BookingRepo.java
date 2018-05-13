@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -68,9 +69,10 @@ final class BookingRepo implements IBookingRepoDAL{
         Map<Integer, Booking> allBookings = new HashMap<>();
         try {
             allFile.forEach(bookingRow -> {
-                allBookings.put(Integer.parseInt(bookingRow.get(0)),
+                allBookings.put(allBookings.size()+1,
                             new Booking(bookingRow.get(1),
-                                   Integer.parseInt(bookingRow.get(2))));
+                                   Integer.parseInt(bookingRow.get(2)),
+                        Integer.parseInt(bookingRow.get(0))));
                 if (largestId < Integer.parseInt(bookingRow.get(0))){
                     largestId = Integer.parseInt(bookingRow.get(0));
                 }
@@ -102,13 +104,15 @@ final class BookingRepo implements IBookingRepoDAL{
                 logger.fatal(e.getMessage());
             }
             //append booking lines
-            for(Map.Entry<Integer, Booking.Pair<Session, Integer>> bookingLine : booking.getBookingLines().entrySet()){
-                List<String > bokingLineList = new LinkedList<>();
-                bokingLineList.add(bookingNumber.toString()); // add booking id
-                bokingLineList.add(bookingLine.getValue().getSession().getId().toString()); //add sessionId
-                bokingLineList.add(bookingLine.getValue().getSeatsBooked().toString());
+            SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd");
+            for(Map.Entry<Integer, Booking.Tuple3<Session, Integer, Date>> bookingLine : booking.getBookingLines().entrySet()){
+                List<String > bookingLineList = new LinkedList<>();
+                bookingLineList.add(bookingNumber.toString()); // add booking id
+                bookingLineList.add(bookingLine.getValue().getSession().getId().toString()); //add sessionId
+                bookingLineList.add(bookingLine.getValue().getSeatsBooked().toString());
+                bookingLineList.add(dateParser.format(bookingLine.getValue().getDateBooked()));
                 try{
-                    CSVUtils.getInstance().writeLine(bokingLineList, BOOKING_LINES_FILE);
+                    CSVUtils.getInstance().writeLine(bookingLineList, BOOKING_LINES_FILE);
                 } catch (IOException e){
                     e.printStackTrace();
                     logger.fatal(e.getMessage());

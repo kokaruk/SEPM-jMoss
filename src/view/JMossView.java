@@ -53,13 +53,14 @@ public abstract class JMossView {
      */
     int getInputInt(){
         initInput();
-        System.out.print(ANSI_GREEN);
         Scanner scanner = new Scanner(System.in);
-        System.out.print(ANSI_RESET);
         Integer option = -1;
         try {
+            System.out.print(ANSI_GREEN);
             option = scanner.nextInt();
+            System.out.print(ANSI_RESET);
         } catch (Exception e) {
+            System.out.print(ANSI_RESET);
             setError(true);
         }
         return option;
@@ -70,6 +71,7 @@ public abstract class JMossView {
      */
     void initInput(){
         clearScreen();
+        System.out.print(ANSI_RESET);
         if(isError()){
             displayContent();
             wrongInput();
@@ -84,7 +86,7 @@ public abstract class JMossView {
      * @param maxValue the largest number allowed
      * @return int from user input
      */
-    int getIntFromUser(int maxValue){
+    int getInputIntWithBound(int maxValue){
         int number;
         String wrongNumber = ANSI_RED + "Wrong number input. Try again" + ANSI_RESET;
         try {
@@ -94,12 +96,13 @@ public abstract class JMossView {
             System.out.print(ANSI_RESET);
             if(number <1 || number > maxValue){
                 System.out.println(wrongNumber);
-                number = getIntFromUser(maxValue);
+                number = getInputIntWithBound(maxValue);
             }
         } catch (Exception ex){
+            System.out.print(ANSI_RESET);
             // don't care what exception, just try again
             System.out.println(wrongNumber);
-            number = getIntFromUser(maxValue);
+            number = getInputIntWithBound(maxValue);
         }
         return number;
     }

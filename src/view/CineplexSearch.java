@@ -86,7 +86,7 @@ public class CineplexSearch extends JMossView {
         makeCinemaMoviesSessionsTable(stringBuilder, cinema);
         stringBuilder.append("\nType \033[31m1\033[0m to return to previous menu");
         System.out.println(stringBuilder.toString());
-        getIntFromUser(1);
+        getInputIntWithBound(1);
 
     }
 
