@@ -48,7 +48,7 @@ public class JMossBookingClerkController implements IController {
             session.setMovie(movies.get(session.getMovieId()));
             session.setCinema(cinemas.get(session.getCinemaId()));
         }
-        // probably not the best solution. loads data from order lines
+        // probably not the best solution. loads data from order lines, then purges old data
         DALFactory.getBookingRepoDAL()
                 .getBookingLines()
                 .forEach(row -> {
@@ -64,6 +64,7 @@ public class JMossBookingClerkController implements IController {
                     }
                 }
         );
+
     }
 
     ////// getters ////

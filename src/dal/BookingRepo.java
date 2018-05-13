@@ -91,7 +91,6 @@ final class BookingRepo implements IBookingRepoDAL{
 
     @Override
     public void addNewBooking(Integer bookingNumber, Booking booking) {
-
             List<String> bookingRowList = new LinkedList<>();
             bookingRowList.add(bookingNumber.toString()); // booking id
             bookingRowList.add(booking.getCustomerEmail()); // cust email
@@ -118,6 +117,10 @@ final class BookingRepo implements IBookingRepoDAL{
                     logger.fatal(e.getMessage());
                 }
             }
+    }
+
+    @Override
+    public void repairDataFiles() {
 
     }
 }

@@ -15,7 +15,14 @@ public interface IBookingRepoDAL {
     // update
     // delete
 
-    // get largest id of booking
+    /**
+     * get largest id of booking, used by adding new booking. since we are reading file anyway, saves time for iterating
+     * collection later
+      */
     Integer getLargestId();
 
+    /**
+     * delete 7 days old
+     */
+    void repairDataFiles();
 }
