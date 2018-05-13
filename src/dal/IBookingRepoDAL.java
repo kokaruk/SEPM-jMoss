@@ -21,8 +21,4 @@ public interface IBookingRepoDAL {
       */
     Integer getLargestId();
 
-    /**
-     * delete 7 days old
-     */
-    void repairDataFiles();
 }

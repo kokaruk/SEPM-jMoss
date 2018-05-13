@@ -1,6 +1,7 @@
 package controller;
 
 import assets.HelperFunctions;
+import dal.BookingPurger;
 import dal.DALFactory;
 import dal.IUserRepoDAL;
 import model.User;
@@ -31,6 +32,8 @@ public class JMossLoginController implements IController {
 
     @Override
     public void start() {
+        BookingPurger purger = new BookingPurger();
+        purger.run();
         login();
         exit();
     }

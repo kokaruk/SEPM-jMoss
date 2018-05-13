@@ -1,10 +1,7 @@
 package dal;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Util methods to read / write CSV files
@@ -66,7 +63,10 @@ class CSVUtils {
             reader.readLine(); // skip headers
             String line;
             while ((line = reader.readLine()) != null) {
-                allFile.add(parseLine(line));
+                List<String> CSVline = parseLine(line);
+                if(CSVline.size()>1){
+                    allFile.add(parseLine(line));
+                }
             }
             return allFile;
         } catch (IOException e) {
@@ -178,7 +178,6 @@ class CSVUtils {
     void writeLine(List<String> values, String filename) throws IOException {
         try (Writer w = new FileWriter(filename, true)) {
             boolean firstVal = true;
-            w.write("\r\n");
             for (String val : values) {
                 if (!firstVal) {
                     w.write(DEFAULT_SEPARATOR);
@@ -194,6 +193,15 @@ class CSVUtils {
                 w.write(DEFAULT_QUOTE);
                 firstVal = false;
             }
+            w.write("\r\n");
+        }
+    }
+
+    void reWriteAllFile(List<String> values, String filename) throws IOException{
+        try (PrintWriter output = new PrintWriter(filename, "UTF-8")) {
+            values.stream()
+                    .filter(Objects::nonNull)
+                    .forEach(output::println);
         }
     }
 

@@ -39,7 +39,7 @@ final class SessionRepo implements ISessionRepoDAL {
     private SessionRepo() {}
 
     // lazy instance constructor
-    static ISessionRepoDAL getInstance() {
+    static synchronized ISessionRepoDAL getInstance() {
         if (instance == null) {
             instance = new SessionRepo();
         }

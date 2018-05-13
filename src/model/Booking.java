@@ -76,24 +76,6 @@ public class Booking {
     }
 
 
-    public class Tuple2<T extends Session, S extends Integer>  {
-        private T session;
-        private S seatsBooked;
-
-        Tuple2(T session, S seatsBooked) {
-            this.session = session;
-            this.seatsBooked = seatsBooked;
-        }
-
-        public Session getSession() {
-            return session;
-        }
-
-        public Integer getSeatsBooked() {
-            return seatsBooked;
-        }
-    }
-
     public class Tuple3<T extends Session, S extends Integer, U extends Date>  {
         private T session;
         private S seatsBooked;

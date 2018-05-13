@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * Real implementation of booking repo. Interacts with Data Reader class
  */
-final class BookingRepo implements IBookingRepoDAL{
+public final class BookingRepo implements IBookingRepoDAL{
     private static Logger logger = LogManager.getLogger();
     private final static String BOOKING_FILE;
     private final static String BOOKING_LINES_FILE;
@@ -51,7 +51,7 @@ final class BookingRepo implements IBookingRepoDAL{
     }
 
     // lazy instance constructor
-    public static IBookingRepoDAL getInstance() {
+    static synchronized IBookingRepoDAL getInstance() {
         if (instance == null) {
             instance = new BookingRepo();
         }
@@ -69,7 +69,7 @@ final class BookingRepo implements IBookingRepoDAL{
         Map<Integer, Booking> allBookings = new HashMap<>();
         try {
             allFile.forEach(bookingRow -> {
-                allBookings.put(allBookings.size()+1,
+                allBookings.put(Integer.parseInt(bookingRow.get(0)),
                             new Booking(bookingRow.get(1),
                                    Integer.parseInt(bookingRow.get(2)),
                         Integer.parseInt(bookingRow.get(0))));
@@ -119,8 +119,5 @@ final class BookingRepo implements IBookingRepoDAL{
             }
     }
 
-    @Override
-    public void repairDataFiles() {
 
-    }
 }

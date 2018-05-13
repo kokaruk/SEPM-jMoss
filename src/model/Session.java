@@ -29,6 +29,7 @@ public class Session {
         this.bookingList = new LinkedList<>();
     }
 
+    //////// setters ////////
     public void setMovie(Movie movie) {
         this.movie = movie;
         movie.addSession(this);
@@ -40,6 +41,7 @@ public class Session {
         cinema.addSession(this);
     }
 
+    //////// getters ////////
     public int getMovieId() {
         return movieId;
     }
@@ -60,9 +62,6 @@ public class Session {
         return movie;
     }
 
-    public List<Booking> getBookingList() {
-        return bookingList;
-    }
 
     public Cinema getCinema() {
         return cinema;
@@ -90,6 +89,19 @@ public class Session {
         }
     }
 
+    public void removeBooking(Booking booking, int bookingSeats){
+        if (bookingList.contains(booking)){
+            bookingList.remove(booking);
+            availableSeats += bookingSeats;
+        }
+    }
+
+
+    /**
+     * get booked seats count from booking
+     * @param booking booking with booking lines
+     * @return taken seats
+     */
     private Integer sessionBookingSeats(Booking booking){
         for(Map.Entry<Integer, Booking.Tuple3<Session, Integer, Date>> bookingLine : booking.getBookingLines().entrySet()){
             if(bookingLine.getValue().getSession() == this){

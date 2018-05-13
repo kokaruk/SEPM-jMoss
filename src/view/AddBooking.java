@@ -253,7 +253,7 @@ public class AddBooking extends JMossView {
                         "\n\n1. Add\\Edit customer details\n" +
                         "2. Select a movie\n" +
                         //   "3. Select a cinema\n" +
-                        "3. Return to previous\n";
+                        "3. Save and Return to main menu\n";
 
         bookingNumber = DALFactory.getBookingRepoDAL().getLargestId() + 1;
 

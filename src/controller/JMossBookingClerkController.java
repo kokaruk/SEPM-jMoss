@@ -1,5 +1,6 @@
 package controller;
 
+import dal.BookingPurger;
 import dal.DALFactory;
 import model.*;
 import org.apache.logging.log4j.LogManager;
@@ -95,7 +96,22 @@ public class JMossBookingClerkController implements IController {
         activateMenu();
     }
 
+    public void removeBooking(Booking booking){
+        for (Map.Entry<Integer, Booking> bookingEntry : bookings.entrySet()){
+            if(bookingEntry.getValue() == booking){
+                bookings.remove(bookingEntry.getKey());
+                BookingPurger purger = new BookingPurger();
+                purger.saveData(bookings);
+                return;
+            }
+        }
+    }
 
+    public void removeBookingLine(Booking booking, int lineNumber){
+        booking.getBookingLines().remove(lineNumber);
+        BookingPurger purger = new BookingPurger();
+        purger.saveData(bookings);
+    }
 
     /**
      * interaction point with view.
