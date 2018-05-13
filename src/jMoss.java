@@ -38,6 +38,7 @@ public class jMoss {
     public static void main(String[] args) throws IOException {
         BookingPurger purger = new BookingPurger();
         purger.start();
+
         JMossView loginView = new LoginView();
         IController controller = new JMossLoginController(loginView);
         controller.start();

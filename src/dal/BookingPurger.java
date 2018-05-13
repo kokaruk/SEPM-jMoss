@@ -45,7 +45,6 @@ public class BookingPurger extends Thread {
         @Override
         public void run() {
             purgeOldOrders();
-            System.out.println("Fixed data done");
         }
 
         /**
