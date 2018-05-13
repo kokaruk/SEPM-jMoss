@@ -267,9 +267,11 @@ public class AddBooking extends JMossView {
                 stringBuilder.append(String.format("Postcode: %d\n", booking.getSuburbPostcode()));
             if (booking.getBookingLines().size() != 0) {
                 for (Map.Entry<Integer, Booking.Tuple3<Session, Integer, Date>> bookingLine : booking.getBookingLines().entrySet()) {
-                    stringBuilder.append(String.format("%d. %s | Seats: %d\n",
+                    stringBuilder.append(String.format("%d. %s | Location: %s | Time: %d:00 | Seats: %d\n",
                             bookingLine.getKey(),
                             bookingLine.getValue().getSession().getMovie().getMovieName(),
+                            bookingLine.getValue().getSession().getCinema().getCinemaName(),
+                            bookingLine.getValue().getSession().getSessionTime(),
                             bookingLine.getValue().getSeatsBooked()));
                 }
             }

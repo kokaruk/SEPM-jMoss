@@ -171,6 +171,9 @@ public class BookingViewDelelete extends JMossView {
         System.out.print(confirm);
         int confirmInt = getInputIntWithBound(2);
         if(confirmInt == 1){
+            Session session = booking.getBookingLines().get(lineTodelete).getSession();
+            int bookingSeats = booking.getBookingLines().get(lineTodelete).getSeatsBooked();
+            clearSession(lineTodelete, session, bookingSeats, booking);
             ((JMossBookingClerkController) controller).removeBookingLine(booking, lineTodelete);
         }
 
@@ -190,13 +193,21 @@ public class BookingViewDelelete extends JMossView {
                 // make seats available
                 Session session = bookingLine.getValue().getSession();
                 int bookingSeats = bookingLine.getValue().getSeatsBooked();
-                session.removeBooking(booking, bookingSeats);
-                booking.getBookingLines().remove(bookingLine.getKey());
+                int bookingLineKey = bookingLine.getKey();
+                clearSession(bookingLineKey, session, bookingSeats, booking);
                 //clear booking from controller (oh its so bad talking from view to controller)
                 ((JMossBookingClerkController) controller).removeBooking(booking);
                 buildMyContent();
             }
         }
+    }
+
+    /**
+     * make seats available
+     */
+    private void clearSession(int bookingLineKey, Session session, int bookingSeats, Booking booking){
+        session.removeBooking(booking, bookingSeats);
+        booking.getBookingLines().remove(bookingLineKey);
     }
 
 

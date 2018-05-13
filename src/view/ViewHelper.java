@@ -5,7 +5,7 @@ package view;
  * @author dimz
  * @since 21/4/18.
  */
-class ViewHelper {
+public class ViewHelper {
 
     static final String ANSI_RESET = "\u001B[0m";
     static final String ANSI_BLACK = "\u001B[30m";
@@ -20,7 +20,7 @@ class ViewHelper {
     // no instance please
     private ViewHelper(){}
 
-    static void clearScreen() {
+    public static void clearScreen() {
         final String ANSI_CLS = "\u001b[2J";
         final String ANSI_HOME = "\u001b[H";
         System.out.print(ANSI_CLS + ANSI_HOME);

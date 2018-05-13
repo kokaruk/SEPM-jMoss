@@ -14,6 +14,8 @@ import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
+import static view.ViewHelper.clearScreen;
+
 /**
  * @author dimz
  * @since 21/4/18.
@@ -73,6 +75,7 @@ public class JMossLoginController implements IController {
     }
 
     private void exit() {
+        clearScreen();
         System.out.println("Bye!");
         Toolkit.getDefaultToolkit().beep(); // doesn't beep on a mac
 
