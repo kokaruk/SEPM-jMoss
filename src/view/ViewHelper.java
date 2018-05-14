@@ -7,9 +7,9 @@ package view;
  */
 public class ViewHelper {
 
-    static final String ANSI_RESET;
+    public static final String ANSI_RESET;
     static final String ANSI_BLACK;
-    static final String ANSI_RED;
+    public static final String ANSI_RED;
     static final String ANSI_GREEN;
     static final String ANSI_YELLOW;
     static final String ANSI_BLUE;

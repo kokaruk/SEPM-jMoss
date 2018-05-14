@@ -2,6 +2,9 @@ package assets;
 
 import java.io.FileNotFoundException;
 
+import static view.ViewHelper.ANSI_RED;
+import static view.ViewHelper.ANSI_RESET;
+
 /**
  * Thrown if config *.properties file is missing.
  *
@@ -12,7 +15,7 @@ import java.io.FileNotFoundException;
 public class ConfigFileMissingException extends FileNotFoundException {
 
     ConfigFileMissingException(String missingFile) {
-        super(String.format("033[31mConfig file %s doesn't exist " +
-                "make sure to transfer to compile folder from sources033[0m", missingFile));
+        super(String.format("%sConfig file %s doesn't exist " +
+                "make sure to transfer to compile folder from sources033[0m", ANSI_RED, missingFile, ANSI_RESET));
     }
 }

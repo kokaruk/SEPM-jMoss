@@ -13,7 +13,7 @@ import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
-import static view.ViewHelper.clearScreen;
+import static view.ViewHelper.*;
 
 /**
  * @author dimz
@@ -66,7 +66,7 @@ public class JMossLoginController implements IController {
             }
 
         } else {
-            System.out.println("\033[31mExhausted maximum allowed login attempts\033[0m");
+            System.out.println(String.format("%sExhausted maximum allowed login attempts%s", ANSI_RED,ANSI_RESET));
             System.exit(1);
         }
     }

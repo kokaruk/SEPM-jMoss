@@ -6,6 +6,7 @@ import java.io.Console;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static view.ViewHelper.ANSI_RED;
 import static view.ViewHelper.ANSI_RESET;
 
 /**
@@ -43,7 +44,7 @@ public class LoginView extends JMossView{
 
     @Override
     public void wrongInput() {
-        System.err.println("\033[31mCan't find username/password combination. Please try again\033[0m");
+        System.err.println(String.format("%sCan't find username/password combination. Please try again%s", ANSI_RED, ANSI_RESET));
     }
 
     @Override

@@ -35,7 +35,7 @@ public abstract class JMossView {
     }
 
     void wrongInput() {
-        System.err.println("\033[31mThis input value is not allowed\n\r\033[0m");
+        System.err.println(ANSI_RED + "This input value is not allowed" + ANSI_RESET + "\n\r");
     }
 
     void displayContent(){

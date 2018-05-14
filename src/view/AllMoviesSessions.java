@@ -6,6 +6,7 @@ import model.Cinema;
 
 import java.util.Map;
 
+import static view.ViewHelper.ANSI_RED;
 import static view.ViewHelper.ANSI_RESET;
 
 /**
@@ -44,7 +45,7 @@ public class AllMoviesSessions extends JMossView {
             stringBuilder.append(cinemaNameRow);
             makeCinemaMoviesSessionsTable(stringBuilder, cinemaEntry.getValue());
         }
-        stringBuilder.append("\nType \033[31m1\033[0m to return to previous menu");
+        stringBuilder.append(String.format("\nType %s1%s to return to previous menu", ANSI_RED, ANSI_RESET));
         myContent = stringBuilder.toString();
     }
 
