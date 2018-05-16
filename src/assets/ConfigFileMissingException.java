@@ -16,6 +16,6 @@ public class ConfigFileMissingException extends FileNotFoundException {
 
     ConfigFileMissingException(String missingFile) {
         super(String.format("%sConfig file %s doesn't exist " +
-                "make sure to transfer to compile folder from sources033[0m", ANSI_RED, missingFile, ANSI_RESET));
+                "make sure to transfer to compile folder from sources%s", ANSI_RED, missingFile, ANSI_RESET));
     }
 }
