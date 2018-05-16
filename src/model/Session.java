@@ -81,7 +81,7 @@ public class Session {
     }
 
     public void addBooking(Booking booking, int bookingSeats){
-        if (bookingSeats <= availableSeats){
+        if (bookingSeats <= availableSeats && availableSeats > 0){
             bookingList.add(booking);
             availableSeats -= bookingSeats;
         } else {
